@@ -41,13 +41,6 @@ public interface PLATA2Visitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitSuma(PLATA2Parser.SumaContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code Entero}
-	 * labeled alternative in {@link PLATA2Parser#expr}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitEntero(PLATA2Parser.EnteroContext ctx);
-	/**
 	 * Visit a parse tree produced by the {@code Parentesis}
 	 * labeled alternative in {@link PLATA2Parser#expr}.
 	 * @param ctx the parse tree
@@ -83,10 +76,23 @@ public interface PLATA2Visitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitMultiplicacion(PLATA2Parser.MultiplicacionContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code nnumero}
+	 * labeled alternative in {@link PLATA2Parser#expr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitNnumero(PLATA2Parser.NnumeroContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code Resta}
 	 * labeled alternative in {@link PLATA2Parser#expr}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitResta(PLATA2Parser.RestaContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link PLATA2Parser#numero}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitNumero(PLATA2Parser.NumeroContext ctx);
 }

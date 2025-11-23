@@ -19,11 +19,12 @@ expr
 	| expr '/' expr	# Division // Mayor precedencia
 	| expr '+' expr	# Suma // Menor precedencia que * y /
 	| expr '-' expr	# Resta // Menor precedencia que * y /
-	| INT	# Entero  //atomo
+	| numero	#nnumero  //atomo
 	| ID	# VariableExpr //atomo
 	| '(' expr ')'	# Parentesis // Precedencia máxima (pero no compite, sino que agrupa)
 	;
-//numero: INT | FLOAT;
+
+numero: INT | FLOAT;
 
 // ------------ Palabras reservadas tokes ----------
 /*AVANZA: 'avanza';
