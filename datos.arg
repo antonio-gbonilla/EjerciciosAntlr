@@ -1,0 +1,11 @@
+avanza(3,3)
+gira(5)
+x=3
+gira(x)
+frena
+
+
+avanza(3,3)
+x=8
+avanza(x,x + 5)
+2*(60-4)*(3+2)
