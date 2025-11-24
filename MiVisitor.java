@@ -1,13 +1,13 @@
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class MiVisitor extends PLATA2BaseVisitor<Object> {
+public class MiVisitor extends PLATABaseVisitor<Object> {
 
 
     Map<String, Double> variables = new LinkedHashMap<>();
 
     @Override
-    public Object visitAsignacion(PLATA2Parser.AsignacionContext ctx) {
+    public Object visitAsignacion(PLATAParser.AsignacionContext ctx) {
         String nombre = ctx.ID().getText();
         Double valor = (Double) visit(ctx.expr());
 
@@ -18,16 +18,34 @@ public class MiVisitor extends PLATA2BaseVisitor<Object> {
     }
 
     @Override
-    public Object visitAvanza(PLATA2Parser.AvanzaContext ctx) {
+    public Object visitAvanza(PLATAParser.AvanzaContext ctx) {
+        String avanza = ctx.AVANZA().getText();
         Double valor1 = (Double) visit(ctx.expr(0));
         Double valor2 = (Double) visit(ctx.expr(1));
-        System.out.println("El roboto avanzara " + valor1 +
+        System.out.println("El roboto " +avanza +" " + valor1 +
                 " metros a una velicidad de " + valor2 + " m/s");
         return null;
     }
 
+    
     @Override
-    public Object visitVariableExpr(PLATA2Parser.VariableExprContext ctx) {
+    public Object visitFrena(PLATAParser.FrenaContext ctx) {
+        String frena = ctx.FRENA().getText();
+                System.out.println("El robot empieza a frenar ejecuta el siguiente comando " + frena);
+        return null;
+    }
+
+    @Override
+    public Object visitGira(PLATAParser.GiraContext ctx) {
+        String gira = ctx.GIRA().getText();
+        Double angulo = (Double) visit(ctx.expr());
+                System.out.println("El roboto " +gira +" " + angulo + " angulos");
+        return null;
+    }
+
+
+    @Override
+    public Object visitVariableExpr(PLATAParser.VariableExprContext ctx) {
         String id = ctx.ID().getText();
         Double valor = variables.get(id);
         if (valor == null)
@@ -38,7 +56,7 @@ public class MiVisitor extends PLATA2BaseVisitor<Object> {
 
     
     @Override
-    public Object visitNumero(PLATA2Parser.NumeroContext ctx) {
+    public Object visitNumero(PLATAParser.NumeroContext ctx) {
         if (ctx.INT() != null)
             return Double.valueOf(ctx.INT().getText());
 
@@ -46,7 +64,7 @@ public class MiVisitor extends PLATA2BaseVisitor<Object> {
     }
 
     @Override
-    public Object visitDivision(PLATA2Parser.DivisionContext ctx) {
+    public Object visitDivision(PLATAParser.DivisionContext ctx) {
         Double dividendo = (Double)visit(ctx.expr(0));
         Double divisor = (Double)visit(ctx.expr(1));
                 System.out.println(dividendo/divisor);
@@ -55,7 +73,7 @@ public class MiVisitor extends PLATA2BaseVisitor<Object> {
     }
 
     @Override
-    public Object visitMultiplicacion(PLATA2Parser.MultiplicacionContext ctx) {
+    public Object visitMultiplicacion(PLATAParser.MultiplicacionContext ctx) {
         Double factor1 = (Double)visit(ctx.expr(0));
         Double factor2 = (Double)visit(ctx.expr(1));
                 System.out.println(factor1*factor2);
@@ -64,7 +82,7 @@ public class MiVisitor extends PLATA2BaseVisitor<Object> {
     }
 
     @Override
-    public Object visitResta(PLATA2Parser.RestaContext ctx) {
+    public Object visitResta(PLATAParser.RestaContext ctx) {
         Double minuendo = (Double)visit(ctx.expr(0));
         Double sustraendo = (Double)visit(ctx.expr(1));
                 System.out.println(minuendo-sustraendo);
@@ -73,7 +91,7 @@ public class MiVisitor extends PLATA2BaseVisitor<Object> {
     }
 
     @Override
-    public Object visitSuma(PLATA2Parser.SumaContext ctx) {
+    public Object visitSuma(PLATAParser.SumaContext ctx) {
         Double sumando1 = (Double)visit(ctx.expr(0));
         Double sumando2 = (Double)visit(ctx.expr(1));
         System.out.println(sumando1+sumando2);
@@ -81,12 +99,12 @@ public class MiVisitor extends PLATA2BaseVisitor<Object> {
     }
 
     @Override
-    public Object visitParentesis(PLATA2Parser.ParentesisContext ctx) {
+    public Object visitParentesis(PLATAParser.ParentesisContext ctx) {
         return visit(ctx.expr());
     }
 
     @Override
-    public Object visitPotencia(PLATA2Parser.PotenciaContext ctx) {
+    public Object visitPotencia(PLATAParser.PotenciaContext ctx) {
         Double base = (Double) visit(ctx.expr(0));
         Double exponente = (Double) visit(ctx.expr(1));
         Double resultado = Math.pow(base, exponente);

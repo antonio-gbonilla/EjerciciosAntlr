@@ -1,11 +1,37 @@
-avanza(3,3)
-gira(5)
-x=3
-gira(x)
+// ============ EXPRESIONES ARITMÉTICAS ============
+// Operaciones básicas
+x = 10
+y = 5.5
+z = x + y * 2
+
+// Precedencia de operadores
+result1 = 2 + 3 * 4           // Debe ser 14, no 20
+result2 = (2 + 3) * 4         // Debe ser 20
+result3 = 10 / 2 + 3          // Debe ser 8, no 2
+
+// Potencia con asociatividad derecha
+potencia1 = 2 ^ 3             // 8
+potencia2 = 2 ^ 3 ^ 2         // Debe ser 2^(3^2) = 2^9 = 512, no (2^3)^2 = 64
+
+// Expresiones complejas
+compleja = (x + y) * (z - 2) ^ 2
+
+// ============ COMANDOS BÁSICOS ============
+avanza(10, 20)
+gira(45)
 frena
 
+// ============ COMBINACIÓN DE VARIABLES Y EXPRESIONES ============
+avanza(x, y + 5)
+gira(90 * 2)
+avanza(result1, result2 * 2)
 
-avanza(3,3)
-x=8
-avanza(x,x + 5)
-2*(60-4)*(3+2)
+// ============ EXPRESIONES ANIDADAS ============
+avanza(5 + 3 * 2, (10 - 2) ^ 2)
+gira(360 / 4 + 45)
+
+// ============ MÚLTIPLES OPERACIONES ============
+a = 1
+b = 2
+c = 3
+d = a + b * c ^ 2        // 1 + (2 * (3^2)) = 1 + (2*9) = 19

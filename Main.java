@@ -34,11 +34,11 @@ public class Main {
         CharStream input = CharStreams.fromStream(is);
 
         // El lexer convierte los caracteres en tokens.
-        PLATA2Lexer lexer = new PLATA2Lexer(input);
+        PLATALexer lexer = new PLATALexer(input);
         // El parser recibirá estos tokens.
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         // Crea el parser con los tokens obtenidos del lexer.
-        PLATA2Parser parser = new PLATA2Parser(tokens);
+        PLATAParser parser = new PLATAParser(tokens);
 
         // Comienza el análisis sintáctico invocando la regla inicial 'programa'
         // (debería ser la regla raíz de la gramatica .g4)
@@ -52,7 +52,7 @@ public class Main {
         System.out.println(tree.toStringTree(parser));
 
         // ----------------------------
-        JFrame frame = new JFrame("Árbol de Parseo PLATA2");
+        JFrame frame = new JFrame("Árbol de Parseo PLATA");
         TreeViewer viewer = new TreeViewer(
                 Arrays.asList(parser.getRuleNames()), // nombres de reglas
                 tree // el árbol
