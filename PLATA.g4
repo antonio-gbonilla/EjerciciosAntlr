@@ -35,12 +35,11 @@ FRENA: 'frena';
 // ----------- LEXER / TOKENS ----------
 
 INT: DIGITO+;
-FLOAT: (DIGITO)+ '.' DIGITO+;
+FLOAT: ('-')? (DIGITO)* '.' DIGITO+; ///!Corregir el signo -
 fragment DIGITO: [0-9];
 
 ID: [a-zA-Z][a-zA-Z_0-9]*;
 
 LINE_COMMENT: '//' ~[\r\n]* -> skip;
 COMMENT : '/*' .*? '*/' -> skip ;
-WS:
-	[ \t\n\r]+ -> skip; //DESCARTA LOS ESPACIOS, SALTOS DE LINEA Y TAB.
+WS: [ \t\n\r]+ -> skip; //DESCARTA LOS ESPACIOS, SALTOS DE LINEA Y TAB.

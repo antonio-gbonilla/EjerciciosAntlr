@@ -64,7 +64,7 @@ public class MiVisitor extends PLATABaseVisitor<Object> {
     }
 
     @Override
-    public Object visitDivision(PLATAParser.DivisionContext ctx) {
+    public Object visitDivision(PLATAParser.DivisionContext ctx) {//!! indeterminacion
         Double dividendo = (Double)visit(ctx.expr(0));
         Double divisor = (Double)visit(ctx.expr(1));
                 System.out.println(dividendo/divisor);
@@ -111,5 +111,7 @@ public class MiVisitor extends PLATABaseVisitor<Object> {
         System.out.println(resultado);
         return resultado;
     }
+
+    
 
 }
