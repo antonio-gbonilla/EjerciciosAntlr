@@ -104,12 +104,39 @@ public class MiVisitor extends PLATABaseVisitor<Object> {
     }
 
     @Override
-    public Object visitPotencia(PLATAParser.PotenciaContext ctx) {
-        Double base = (Double) visit(ctx.expr(0));
-        Double exponente = (Double) visit(ctx.expr(1));
-        Double resultado = Math.pow(base, exponente);
-        System.out.println(resultado);
-        return resultado;
+    public Object visitBloque(PLATAParser.BloqueContext ctx) {
+        // TODO Auto-generated method stub
+        return super.visitBloque(ctx);
+    }
+
+    @Override
+    public Object visitBucle_while(PLATAParser.Bucle_whileContext ctx) {
+        // TODO Auto-generated method stub
+        return super.visitBucle_while(ctx);
+    }
+
+    @Override
+    public Object visitCondicion(PLATAParser.CondicionContext ctx) {
+        // TODO Auto-generated method stub
+        return super.visitCondicion(ctx);
+    }
+
+    @Override
+    public Object visitIf_sentencia(PLATAParser.If_sentenciaContext ctx) {
+        if(visit(ctx.condicion(0))){
+
+
+            while (visit(ctx.condicion(1)!=null)) {
+                
+            }
+        } 
+        return super.visitIf_sentencia(ctx);
+    }
+
+    @Override
+    public Object visitOperadorCondicional(PLATAParser.OperadorCondicionalContext ctx) {
+        // TODO Auto-generated method stub
+        return super.visitOperadorCondicional(ctx);
     }
 
     

@@ -46,6 +46,18 @@ public interface PLATAVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitAsignacion(PLATAParser.AsignacionContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link PLATAParser#if_sentencia}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitIf_sentencia(PLATAParser.If_sentenciaContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link PLATAParser#bucle_while}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBucle_while(PLATAParser.Bucle_whileContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code Suma}
 	 * labeled alternative in {@link PLATAParser#expr}.
 	 * @param ctx the parse tree
@@ -74,13 +86,6 @@ public interface PLATAVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitDivision(PLATAParser.DivisionContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code Potencia}
-	 * labeled alternative in {@link PLATAParser#expr}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitPotencia(PLATAParser.PotenciaContext ctx);
-	/**
 	 * Visit a parse tree produced by the {@code Multiplicacion}
 	 * labeled alternative in {@link PLATAParser#expr}.
 	 * @param ctx the parse tree
@@ -107,4 +112,22 @@ public interface PLATAVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitNumero(PLATAParser.NumeroContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link PLATAParser#bloque}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBloque(PLATAParser.BloqueContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link PLATAParser#condicion}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitCondicion(PLATAParser.CondicionContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link PLATAParser#operadorCondicional}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitOperadorCondicional(PLATAParser.OperadorCondicionalContext ctx);
 }
