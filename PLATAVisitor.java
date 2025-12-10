@@ -58,60 +58,75 @@ public interface PLATAVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitBucle_while(PLATAParser.Bucle_whileContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code Suma}
+	 * Visit a parse tree produced by the {@code DivisionExpr}
 	 * labeled alternative in {@link PLATAParser#expr}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitSuma(PLATAParser.SumaContext ctx);
+	T visitDivisionExpr(PLATAParser.DivisionExprContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code Parentesis}
+	 * Visit a parse tree produced by the {@code ParentesisExpr}
 	 * labeled alternative in {@link PLATAParser#expr}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitParentesis(PLATAParser.ParentesisContext ctx);
+	T visitParentesisExpr(PLATAParser.ParentesisExprContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code VariableExpr}
+	 * Visit a parse tree produced by the {@code SumaExpr}
 	 * labeled alternative in {@link PLATAParser#expr}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitVariableExpr(PLATAParser.VariableExprContext ctx);
+	T visitSumaExpr(PLATAParser.SumaExprContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code Division}
+	 * Visit a parse tree produced by the {@code RestaExpr}
 	 * labeled alternative in {@link PLATAParser#expr}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitDivision(PLATAParser.DivisionContext ctx);
+	T visitRestaExpr(PLATAParser.RestaExprContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code Multiplicacion}
+	 * Visit a parse tree produced by the {@code atomicoExpr}
 	 * labeled alternative in {@link PLATAParser#expr}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitMultiplicacion(PLATAParser.MultiplicacionContext ctx);
+	T visitAtomicoExpr(PLATAParser.AtomicoExprContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code nnumero}
+	 * Visit a parse tree produced by the {@code MultiplicacionExpr}
 	 * labeled alternative in {@link PLATAParser#expr}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitNnumero(PLATAParser.NnumeroContext ctx);
+	T visitMultiplicacionExpr(PLATAParser.MultiplicacionExprContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code Resta}
-	 * labeled alternative in {@link PLATAParser#expr}.
+	 * Visit a parse tree produced by the {@code numeroAtomico}
+	 * labeled alternative in {@link PLATAParser#atomico}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitResta(PLATAParser.RestaContext ctx);
+	T visitNumeroAtomico(PLATAParser.NumeroAtomicoContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link PLATAParser#numero}.
+	 * Visit a parse tree produced by the {@code booleanAtomico}
+	 * labeled alternative in {@link PLATAParser#atomico}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitNumero(PLATAParser.NumeroContext ctx);
+	T visitBooleanAtomico(PLATAParser.BooleanAtomicoContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code idAtomico}
+	 * labeled alternative in {@link PLATAParser#atomico}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitIdAtomico(PLATAParser.IdAtomicoContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code stringAtomico}
+	 * labeled alternative in {@link PLATAParser#atomico}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitStringAtomico(PLATAParser.StringAtomicoContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link PLATAParser#bloque}.
 	 * @param ctx the parse tree

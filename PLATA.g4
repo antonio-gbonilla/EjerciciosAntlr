@@ -4,7 +4,7 @@ grammar PLATA;
 programa: sentencia+ EOF;
 
 //-------------- LINEAS A PROCESAR -----------
-sentencia: avanza | gira | frena | asignacion | if_sentencia | bucle_while | expr;
+sentencia: avanza | gira | frena | asignacion | if_sentencia | bucle_while | expr; //!verbos
 
 // ----------- METODOS ------------
 avanza: AVANZA '(' expr ',' expr ')';
@@ -16,7 +16,9 @@ frena: FRENA;
 asignacion: ID '=' expr;
 
 // if
-if_sentencia: IF '('condicion ')' bloque (ELSE_IF '('condicion ')' bloque)* (ELSE '('condicion ')' bloque)?;
+if_sentencia: 	IF '('condicion ')' bloque 
+				(ELSE_IF '('condicion ')' bloque)* 
+				(ELSE bloque)?;
 
 // while
 bucle_while: WHILE '('condicion ')' bloque;
@@ -24,15 +26,20 @@ bucle_while: WHILE '('condicion ')' bloque;
 
 // --- EXPRESIONES ---
 expr
-	: expr '*' expr	# Multiplicacion // Mayor precedencia
-	| expr '/' expr	# Division // Mayor precedencia
-	| expr '+' expr	# Suma // Menor precedencia que * y /
-	| expr '-' expr	# Resta // Menor precedencia que * y /
-	| numero	#nnumero  //atomo
-	| ID	# VariableExpr //atomo
-	| '(' expr ')'	# Parentesis // Precedencia máxima (pero no compite, sino que agrupa)
+	: expr '*' expr	# MultiplicacionExpr // Mayor precedencia
+	| expr '/' expr	# DivisionExpr // Mayor precedencia
+	| expr '+' expr	# SumaExpr // Menor precedencia que * y /
+	| expr '-' expr	# RestaExpr // Menor precedencia que * y /
+	| atomico	#atomicoExpr  //atomo
+	| '(' expr ')'	# ParentesisExpr // Precedencia máxima (pero no compite, sino que agrupa)
 	;
-numero: INT | FLOAT;
+
+atomico
+	: (INT | FLOAT) #numeroAtomico 
+	| (TRUE | FALSE)	#booleanAtomico
+	| ID	# idAtomico //atomo
+	| STRING	#stringAtomico
+	;
 
 // Bloque 
 bloque: '{' sentencia+ '}';
@@ -55,27 +62,31 @@ operadorCondicional
 //  Palabras reservadas tokes
 AVANZA: [Aa] 'vanza';
 GIRA: [Gg] 'ira';
-FRENA: [Ff] 'rena';
+FRENA: [Pp] 'ara';
 WHILE: [Mm] 'ientras';
 IF: [Ss] 'i';
-ELSE_IF: [Dd]'eLoContrarioSi';
-ELSE: [Dd]'eLoContrario';
-TRUE: [Vv]'erdad';
-False: [Mm]'entira';
-NULL: 'null';
+ELSE_IF: [Ss]'iNo';
+ELSE: [Ss]'iNoSi';
+TRUE: [Vv]'erdero';
+FALSE: [Mm]'Falso';
+NULL: [Nn]'ulo';
 
 //CONDICIONALES
-MAYOR: '>';
-MENOR: '<';
 MAYOR_IGUAL: '>=';
 MENOR_IGUAL: '<=';
-DISTINTO: '!';
+MAYOR: '>';
+MENOR: '<';
+DISTINTO: '!=';
 IGUAL_QUE: '==';
+
 
 //Numeros
 INT: DIGITO+;
-FLOAT: ('-')? (DIGITO)* '.' DIGITO+; ///!Corregir el signo -
+FLOAT: ('-')? (DIGITO)+ '.' DIGITO+; ///!Corregir el signo -
 fragment DIGITO: [0-9];
+
+//String
+STRING: '"' (~["\r\n] | '""')* '"';
 
 ID: [a-zA-Z][a-zA-Z_0-9]*;
 

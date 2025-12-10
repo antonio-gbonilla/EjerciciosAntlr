@@ -73,56 +73,70 @@ public class PLATABaseVisitor<T> extends AbstractParseTreeVisitor<T> implements 
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitSuma(PLATAParser.SumaContext ctx) { return visitChildren(ctx); }
+	@Override public T visitDivisionExpr(PLATAParser.DivisionExprContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitParentesis(PLATAParser.ParentesisContext ctx) { return visitChildren(ctx); }
+	@Override public T visitParentesisExpr(PLATAParser.ParentesisExprContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitVariableExpr(PLATAParser.VariableExprContext ctx) { return visitChildren(ctx); }
+	@Override public T visitSumaExpr(PLATAParser.SumaExprContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitDivision(PLATAParser.DivisionContext ctx) { return visitChildren(ctx); }
+	@Override public T visitRestaExpr(PLATAParser.RestaExprContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitMultiplicacion(PLATAParser.MultiplicacionContext ctx) { return visitChildren(ctx); }
+	@Override public T visitAtomicoExpr(PLATAParser.AtomicoExprContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitNnumero(PLATAParser.NnumeroContext ctx) { return visitChildren(ctx); }
+	@Override public T visitMultiplicacionExpr(PLATAParser.MultiplicacionExprContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitResta(PLATAParser.RestaContext ctx) { return visitChildren(ctx); }
+	@Override public T visitNumeroAtomico(PLATAParser.NumeroAtomicoContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitNumero(PLATAParser.NumeroContext ctx) { return visitChildren(ctx); }
+	@Override public T visitBooleanAtomico(PLATAParser.BooleanAtomicoContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitIdAtomico(PLATAParser.IdAtomicoContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitStringAtomico(PLATAParser.StringAtomicoContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
