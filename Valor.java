@@ -24,7 +24,7 @@
 
 public class Valor {
 
-    //!No entiendo
+    //Creas un objeto de tipo valor que contenga un objeto Vacio
     public static Valor VACIO = new Valor(new Object());
 
     // El valor interno real (puede ser Double, Boolean, String, etc.)
