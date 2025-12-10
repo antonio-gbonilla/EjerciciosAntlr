@@ -185,8 +185,28 @@ public class MiVisitor extends PLATABaseVisitor<Valor> {
 
     @Override
     public Valor visitIf_sentencia(PLATAParser.If_sentenciaContext ctx) {
-        // TODO Auto-generated method stub
-        return super.visitIf_sentencia(ctx);
+        // IF principal
+        Valor primeraCondicion = visit(ctx.condicion(0));
+        if(primeraCondicion.asBoolean()){
+            visit(ctx.bloque(0));
+        }
+
+        // Todos los IF ELSE
+        int totalCondiciones = ctx.condicion().size(); // incluye las del IF y los ELSE_IF
+        int totalBloques = ctx.bloque().size(); // incluye el del IF, ELSE_IF(s) y ELSE
+
+        for(int i=1; i<totalCondiciones;i++){
+            Valor elseIfCondiciones = visit(ctx.condicion(i));
+            if(elseIfCondiciones.asBoolean()){
+                visit(ctx.bloque(i));
+            }
+        }
+
+        //Else si existe
+        if (totalBloques>totalCondiciones) {
+            visit(ctx.bloque(totalBloques - 1));
+        }
+        return Valor.VACIO;//!Mirar return
     }
 
 }
