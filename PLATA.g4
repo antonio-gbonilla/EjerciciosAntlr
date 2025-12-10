@@ -26,7 +26,8 @@ bucle_while: WHILE '('condicion ')' bloque;
 
 // --- EXPRESIONES ---
 expr
-	: expr '*' expr	# MultiplicacionExpr // Mayor precedencia
+	: NOT expr		#notExpr
+	| expr '*' expr	# MultiplicacionExpr // Mayor precedencia
 	| expr '/' expr	# DivisionExpr // Mayor precedencia
 	| expr '+' expr	# SumaExpr // Menor precedencia que * y /
 	| expr '-' expr	# RestaExpr // Menor precedencia que * y /
@@ -54,6 +55,8 @@ operadorCondicional
 	| MENOR_IGUAL
 	| DISTINTO
 	| IGUAL_QUE
+	| AND
+	| OR
 	;
 
 
@@ -78,7 +81,9 @@ MAYOR: '>';
 MENOR: '<';
 DISTINTO: '!=';
 IGUAL_QUE: '==';
-
+NOT: '!';
+AND: '&&';
+OR: '||';
 
 //Numeros
 INT: DIGITO+;

@@ -58,6 +58,13 @@ public interface PLATAVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitBucle_while(PLATAParser.Bucle_whileContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code notExpr}
+	 * labeled alternative in {@link PLATAParser#expr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitNotExpr(PLATAParser.NotExprContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code DivisionExpr}
 	 * labeled alternative in {@link PLATAParser#expr}.
 	 * @param ctx the parse tree
