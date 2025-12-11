@@ -1,37 +1,133 @@
-// ============ EXPRESIONES ARITMÉTICAS ============
-// Operaciones básicas
-x = 10
-y = 5.5
-z = x + y * 2
+///////////////////////////////////////////////////////////
+// PRUEBA INTEGRAL DE TODA LA GRAMÁTICA DE PLATA
+///////////////////////////////////////////////////////////
 
-// Precedencia de operadores
-result1 = 2 + 3 * 4           // Debe ser 14, no 20
-result2 = (2 + 3) * 4         // Debe ser 20
-result3 = 10 / 2 + 3          // Debe ser 8, no 2
+//------------------------------
+// ASIGNACIONES Y VARIABLES
+//------------------------------
+a = 10
+b = 2.5
+texto = "Hola Mundo"
+c = 0.1 + 0.2        // Test tolerancia
+d = "Hola" + "PLATA"
+flag = Verdadero
+flag2 = Falso
 
-// Potencia con asociatividad derecha
-potencia1 = 2 ^ 3             // 8
-potencia2 = 2 ^ 3 ^ 2         // Debe ser 2^(3^2) = 2^9 = 512, no (2^3)^2 = 64
+///////////////////////////////////////////////////////////
+// OPERACIONES ARITMÉTICAS
+///////////////////////////////////////////////////////////
+resultado1 = a + b
+resultado2 = a - b
+resultado3 = a * b
+resultado4 = a / b
+resultado5 = (a + b) * (3 - 1)
 
-// Expresiones complejas
-compleja = (x + y) * (z - 2) ^ 2
+///////////////////////////////////////////////////////////
+// OPERACIONES BOOLEANAS
+///////////////////////////////////////////////////////////
+bool1 = !flag2
+bool2 = flag && flag2
+bool3 = flag || flag2
+bool4 = (a > b)
+bool5 = (a >= 10)
+bool6 = (b < a)
+bool7 = (b <= a)
+bool8 = (10 != 10.0000000001)   // test tolerancia DISTINTO
+bool9 = (10 == 9.9999999999)    // test tolerancia IGUAL_QUE
 
-// ============ COMANDOS BÁSICOS ============
-avanza(10, 20)
+///////////////////////////////////////////////////////////
+// ACCIONES DEL ROBOT
+///////////////////////////////////////////////////////////
+Avanza(5, 2)
+avanza(3.2, 1.1)
+Gira(90)
 gira(45)
-frena
+Para
 
-// ============ COMBINACIÓN DE VARIABLES Y EXPRESIONES ============
-avanza(x, y + 5)
-gira(90 * 2)
-avanza(result1, result2 * 2)
+///////////////////////////////////////////////////////////
+// IF BÁSICOS
+///////////////////////////////////////////////////////////
+Si (a > 5) {
+    Avanza(1,1)
+}
 
-// ============ EXPRESIONES ANIDADAS ============
-avanza(5 + 3 * 2, (10 - 2) ^ 2)
-gira(360 / 4 + 45)
+Si (a < 5) {
+    Avanza(1,1)
+} SiNo {
+    Gira(180)
+}
 
-// ============ MÚLTIPLES OPERACIONES ============
-a = 1
-b = 2
-c = 3
-d = a + b * c ^ 2        // 1 + (2 * (3^2)) = 1 + (2*9) = 19
+///////////////////////////////////////////////////////////
+// IF – ELSE IF – ELSE COMPLEJO
+///////////////////////////////////////////////////////////
+Si (a < 5) {
+    Avanza(1,1)
+} SiNo (a == 10) {
+    Gira(90)
+} SiNo (b == 2.5) {
+    Para
+} SiNoSi {
+    Avanza(10,1)
+}
+
+///////////////////////////////////////////////////////////
+// WHILE SIMPLE
+///////////////////////////////////////////////////////////
+contador = 0
+Mientras (contador < 3) {
+    Avanza(contador, 1)
+    contador = contador + 1
+}
+
+///////////////////////////////////////////////////////////
+// WHILE CON EXPRESIONES Y STRINGS
+///////////////////////////////////////////////////////////
+i = 0
+Mientras (i != 2) {
+    texto = "Iteración número: " + i
+    Gira(i * 30)
+    i = i + 1
+}
+
+///////////////////////////////////////////////////////////
+// ANIDAMIENTO COMPLEJO IF + WHILE
+///////////////////////////////////////////////////////////
+x = 0
+Mientras (x < 4) {
+    Si (x == 0) {
+        Avanza(2, 1)
+    } SiNo (x == 1) {
+        Gira(45)
+    } SiNo (x == 2) {
+        Para
+    } SiNoSi {
+        avanza(10,2)
+    }
+
+    x = x + 1
+}
+
+///////////////////////////////////////////////////////////
+// STRINGS, BOOLEANS Y EXPRESIONES MEZCLADAS
+///////////////////////////////////////////////////////////
+mensaje = "Valor de a = " + a
+resultadoBool = ( (a > b) && (flag || !flag2) )
+
+///////////////////////////////////////////////////////////
+// TEST DE PARÉNTESIS PROFUNDOS
+///////////////////////////////////////////////////////////
+resPar = (((((5 + 2) * 3) - 1) / 2) + (10 - (3 * (2 + 1))))
+
+///////////////////////////////////////////////////////////
+// TEST DE ERRORES LÓGICOS (opcionales)
+// NO descomentar si no quieres ver excepciones
+///////////////////////////////////////////////////////////
+
+// divisionPorCero = 10 / 0
+// variableInexistente = z
+// condicionInvalida = "hola" > 2
+// Mientras ("texto" < 10) { Avanza(1,1) }
+
+///////////////////////////////////////////////////////////
+// FIN DEL TEST
+///////////////////////////////////////////////////////////
