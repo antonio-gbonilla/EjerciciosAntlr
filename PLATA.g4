@@ -31,7 +31,7 @@ expr
 	| expr '/' expr	# DivisionExpr // Mayor precedencia
 	| expr '+' expr	# SumaExpr // Menor precedencia que * y /
 	| expr '-' expr	# RestaExpr // Menor precedencia que * y /
-	| atomico	#atomicoExpr  //atomo
+	| atomico		#atomicoExpr  //atomo
 	| '(' expr ')'	# ParentesisExpr // Precedencia máxima (pero no compite, sino que agrupa)
 	;
 
@@ -70,8 +70,8 @@ WHILE: [Mm] 'ientras';
 IF: [Ss] 'i';
 ELSE_IF: [Ss]'iNo';
 ELSE: [Ss]'iNoSi';
-TRUE: [Vv]'erdero';
-FALSE: [Mm]'Falso';
+TRUE: [Vv]'erdadero';
+FALSE: [Ff]'also';
 NULL: [Nn]'ulo';
 
 //CONDICIONALES

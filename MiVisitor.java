@@ -8,26 +8,45 @@ public class MiVisitor extends PLATABaseVisitor<Valor> {
 
     /**
      * Procesa una sentencia de asignación de la forma:
+     * 
      * <pre>
-     *     id = expr;
+     * id = expr;
      * </pre>
+     * 
      * Evalúa la expresión a la derecha del '=' y la almacena en la tabla
      * de variables usando el nombre del identificador.
      *
      * @param ctx contexto del parser correspondiente a {@code asignacion}.
-     * @return siempre {@link Valor#VACIO}, ya que una asignación no produce un valor evaluable.
+     * @return siempre {@link Valor#VACIO}, ya que una asignación no produce un
+     *         valor evaluable.
      */
     @Override
     public Valor visitAsignacion(PLATAParser.AsignacionContext ctx) {
+        // !Cambiar seguramente en un futoro por lo comentado
+        
+          String nombre = ctx.ID().getText();
+          Valor valor = (Valor) visit(ctx.expr());
+          
+          variables.put(nombre, valor);
+          System.out.println("El Value de la variable " + nombre + " es " + valor);
+          
+         return Valor.VACIO;
+        /* *
         String nombre = ctx.ID().getText();
-        Valor valor = (Valor) visit(ctx.expr());
+
+        Valor valor;
+        if (ctx.condicion() != null) {
+            valor = visit(ctx.condicion());
+        } else {
+            valor = visit(ctx.expr());
+        }
 
         variables.put(nombre, valor);
         System.out.println("El Value de la variable " + nombre + " es " + valor);
 
-        return Valor.VACIO;
-    }
+        return Valor.VACIO;*/
 
+    }
 
     @Override
     public Valor visitAvanza(PLATAParser.AvanzaContext ctx) {
@@ -67,6 +86,10 @@ public class MiVisitor extends PLATABaseVisitor<Valor> {
     public Valor visitSumaExpr(PLATAParser.SumaExprContext ctx) {
         Valor sumando1 = visit(ctx.expr(0));
         Valor sumando2 = visit(ctx.expr(1));
+        if (sumando1.isString() || sumando2.isString()) {
+            System.out.println(sumando1.asString() + sumando2.asString());
+            return new Valor(sumando1.asString() + sumando2.asString());
+        }
         System.out.println(sumando1.asDouble() + sumando2.asDouble());
         return new Valor(sumando1.asDouble() + sumando2.asDouble());
     }
@@ -91,8 +114,8 @@ public class MiVisitor extends PLATABaseVisitor<Valor> {
      * Evalúa una división entre dos expresiones numéricas.
      * Incluye validaciones de indeterminación:
      * <ul>
-     *     <li>0 / 0</li>
-     *     <li>x / 0</li>
+     * <li>0 / 0</li>
+     * <li>x / 0</li>
      * </ul>
      *
      * @param ctx contexto de {@code DivisionExpr}.
@@ -133,7 +156,8 @@ public class MiVisitor extends PLATABaseVisitor<Valor> {
     }
 
     /**
-     * Evalúa una expresión entre paréntesis, simplemente delegando a la expresión interna.
+     * Evalúa una expresión entre paréntesis, simplemente delegando a la expresión
+     * interna.
      *
      * @param ctx contexto de {@code ParentesisExpr}.
      * @return el valor resultante de evaluar la expresión interna.
@@ -145,7 +169,8 @@ public class MiVisitor extends PLATABaseVisitor<Valor> {
     }
 
     /**
-     * Devuelve un valor booleano a partir del literal <code>verdadero</code> o <code>falso</code>.
+     * Devuelve un valor booleano a partir del literal <code>verdadero</code> o
+     * <code>falso</code>.
      *
      * @param ctx contexto de {@code BooleanAtomico}.
      * @return un {@link Valor} booleano.
@@ -154,7 +179,18 @@ public class MiVisitor extends PLATABaseVisitor<Valor> {
     @Override
     public Valor visitBooleanAtomico(PLATAParser.BooleanAtomicoContext ctx) {
         String bool = ctx.getText();
-        return new Valor(Boolean.valueOf(bool));
+        // Ponemos en mayusculas la primera letra
+        String normalizado = Character.toUpperCase(bool.charAt(0)) + bool.substring(1);
+        switch (normalizado) {
+            case "Verdadero":
+                return new Valor(true);
+
+            case "Falso":
+                return new Valor(false);
+
+            default:
+                throw new PlataException("Booleano inválido: " + ctx.getText());
+        }
     }
 
     /**
@@ -177,7 +213,8 @@ public class MiVisitor extends PLATABaseVisitor<Valor> {
     }
 
     /**
-     * Convierte un literal entero o flotante en su correspondiente {@link Valor} numérico.
+     * Convierte un literal entero o flotante en su correspondiente {@link Valor}
+     * numérico.
      *
      * @param ctx contexto de {@code NumeroAtomico}.
      * @return un {@link Valor} conteniendo el número como double.
@@ -225,29 +262,30 @@ public class MiVisitor extends PLATABaseVisitor<Valor> {
      * @param ctx contexto de {@code condicion}.
      * @return un {@link Valor} booleano con el resultado de la comparación.
      * @throws RuntimeException si el operador es desconocido.
-     */ 
+     */
     @Override
     public Valor visitCondicion(PLATAParser.CondicionContext ctx) {
         Valor opIzquierdo = visit(ctx.expr(0));
         Valor opDerecho = visit(ctx.expr(1));
-        
+
         // Obtiene el tipo de token del operador relacional/lógico
         int tipoToken = ctx.operadorCondicional().start.getType();
-        
+
         switch (tipoToken) {
             case PLATAParser.MAYOR:
-                return new Valor(opIzquierdo.asDouble() > opDerecho.asDouble());             
+                return new Valor(opIzquierdo.asDouble() > opDerecho.asDouble());
             case PLATAParser.MENOR:
-                return new Valor(opIzquierdo.asDouble() < opDerecho.asDouble());             
+                return new Valor(opIzquierdo.asDouble() < opDerecho.asDouble());
             case PLATAParser.MAYOR_IGUAL:
-                return new Valor(opIzquierdo.asDouble() >= opDerecho.asDouble());             
+                return new Valor(opIzquierdo.asDouble() >= opDerecho.asDouble());
             case PLATAParser.MENOR_IGUAL:
-                return new Valor(opIzquierdo.asDouble() <= opDerecho.asDouble());             
+                return new Valor(opIzquierdo.asDouble() <= opDerecho.asDouble());
             case PLATAParser.DISTINTO:
                 // Caso especial: si ambos son números, se usa comparación con tolerancia
-                if(opIzquierdo.isDouble() && opDerecho.isDouble()){
-                    // Se comprueba si la diferencia absoluta es mayor o igual a la tolerancia VALOR_PEQUEÑO, esto es porque son Double
-                    Valor v = new Valor(Math.abs(opIzquierdo.asDouble()-opDerecho.asDouble()) >= VALOR_PEQUEÑO);
+                if (opIzquierdo.isDouble() && opDerecho.isDouble()) {
+                    // Se comprueba si la diferencia absoluta es mayor o igual a la tolerancia
+                    // VALOR_PEQUEÑO, esto es porque son Double
+                    Valor v = new Valor(Math.abs(opIzquierdo.asDouble() - opDerecho.asDouble()) >= VALOR_PEQUEÑO);
                     return v;
                 } else {
                     // Si no son números, se compara usando equals
@@ -256,9 +294,9 @@ public class MiVisitor extends PLATABaseVisitor<Valor> {
                 }
             case PLATAParser.IGUAL_QUE:
                 // Caso especial: comparación con tolerancia entre números
-                if(opIzquierdo.isDouble() && opDerecho.isDouble()){
+                if (opIzquierdo.isDouble() && opDerecho.isDouble()) {
                     // Son iguales si la diferencia es menor que la tolerancia
-                    Valor v = new Valor(Math.abs(opIzquierdo.asDouble()-opDerecho.asDouble()) < VALOR_PEQUEÑO);
+                    Valor v = new Valor(Math.abs(opIzquierdo.asDouble() - opDerecho.asDouble()) < VALOR_PEQUEÑO);
                     return v;
                 } else {
                     // Para String, boolean, etc. se usa equals normal
@@ -279,75 +317,93 @@ public class MiVisitor extends PLATABaseVisitor<Valor> {
      * Evalúa y ejecuta una sentencia <b>while</b> definida en la gramática PLATA.
      * <p>
      * La estructura corresponde a:
+     * 
      * <pre>
      * Mientras (condicion) {
      *     bloque
      * }
      * </pre>
+     * 
      * Este método:
      * <ol>
-     *   <li>Evalúa la condición inicial del bucle.</li>
-     *   <li>Verifica que el resultado sea booleano; si no, lanza una {@link PlataException}.</li>
-     *   <li>Mientras la condición sea verdadera, ejecuta el bloque asociado al while.</li>
-     *   <li>Después de cada iteración, vuelve a evaluar la condición, permitiendo que
-     *       variables internas puedan romper el bucle.</li>
+     * <li>Evalúa la condición inicial del bucle.</li>
+     * <li>Verifica que el resultado sea booleano; si no, lanza una
+     * {@link PlataException}.</li>
+     * <li>Mientras la condición sea verdadera, ejecuta el bloque asociado al
+     * while.</li>
+     * <li>Después de cada iteración, vuelve a evaluar la condición, permitiendo que
+     * variables internas puedan romper el bucle.</li>
      * </ol>
      *
-     * El bucle se detendrá cuando la condición evaluada devuelva <code>false</code>.
+     * El bucle se detendrá cuando la condición evaluada devuelva
+     * <code>false</code>.
      *
-     * @param ctx el contexto sintáctico correspondiente a {@code bucle_while} generado por ANTLR.
-     * @return siempre {@link Valor#VACIO}, ya que la ejecución del <i>while</i> no produce un valor directo.
+     * @param ctx el contexto sintáctico correspondiente a {@code bucle_while}
+     *            generado por ANTLR.
+     * @return siempre {@link Valor#VACIO}, ya que la ejecución del <i>while</i> no
+     *         produce un valor directo.
      * @throws PlataException si la condición no devuelve un valor booleano válido.
      */
 
     @Override
     public Valor visitBucle_while(PLATAParser.Bucle_whileContext ctx) {
         Valor condicion = visit(ctx.condicion());
-        if(condicion.asBoolean())
+        if (condicion.asBoolean())
             throw new PlataException("La condicion del bucle no es un booleano");
-        
-        while(condicion.asBoolean()){
+
+        while (condicion.asBoolean()) {
             visit(ctx.bloque());
-            //La condicion se ha tenido que modificar, si no seria un bucle
-            condicion=visit(ctx.condicion());
+            // La condicion se ha tenido que modificar, si no seria un bucle
+            condicion = visit(ctx.condicion());
             System.out.println(" Se esta ejecutando un bucle while");
-        };
+        }
+        ;
 
         return Valor.VACIO;
-        
+
     }
 
     /**
      * Evalúa una sentencia condicional compuesta por:
      * <ul>
-     *     <li>Un bloque <code>if</code> con su condición.</li>
-     *     <li>Cero o más bloques <code>else if</code> con sus condiciones.</li>
-     *     <li>Opcionalmente un bloque <code>else</code> sin condición.</li>
+     * <li>Un bloque <code>if</code> con su condición.</li>
+     * <li>Cero o más bloques <code>else if</code> con sus condiciones.</li>
+     * <li>Opcionalmente un bloque <code>else</code> sin condición.</li>
      * </ul>
      *
-     * <p>El funcionamiento sigue la semántica habitual de los lenguajes de programación:</p>
+     * <p>
+     * El funcionamiento sigue la semántica habitual de los lenguajes de
+     * programación:
+     * </p>
      * <ol>
-     *     <li>Se evalúa la condición del <code>if</code>.  
-     *         Si es verdadera, se ejecuta su bloque y la sentencia termina.</li>
-     *     <li>Si el <code>if</code> no se ejecuta, se recorren los bloques <code>else if</code>
-     *         en orden.  
-     *         El primero cuya condición sea verdadera ejecuta su bloque y la sentencia termina.</li>
-     *     <li>Si ninguna condición fue verdadera y existe un <code>else</code>, se ejecuta su bloque.</li>
+     * <li>Se evalúa la condición del <code>if</code>.
+     * Si es verdadera, se ejecuta su bloque y la sentencia termina.</li>
+     * <li>Si el <code>if</code> no se ejecuta, se recorren los bloques
+     * <code>else if</code>
+     * en orden.
+     * El primero cuya condición sea verdadera ejecuta su bloque y la sentencia
+     * termina.</li>
+     * <li>Si ninguna condición fue verdadera y existe un <code>else</code>, se
+     * ejecuta su bloque.</li>
      * </ol>
      *
-     * <p>Solo se ejecuta un único bloque (if / else-if / else).  
-     * Siempre devuelve <code>Valor.VACIO</code> ya que una sentencia <code>if</code> 
-     * no produce un valor computable.</p>
+     * <p>
+     * Solo se ejecuta un único bloque (if / else-if / else).
+     * Siempre devuelve <code>Valor.VACIO</code> ya que una sentencia
+     * <code>if</code>
+     * no produce un valor computable.
+     * </p>
      *
      * @param ctx El contexto del árbol sintáctico que representa la sentencia IF.
-     * @return <code>Valor.VACIO</code> (la sentencia no devuelve un resultado útil).
+     * @return <code>Valor.VACIO</code> (la sentencia no devuelve un resultado
+     *         útil).
      */
 
     @Override
     public Valor visitIf_sentencia(PLATAParser.If_sentenciaContext ctx) {
         // IF principal
         Valor primeraCondicion = visit(ctx.condicion(0));
-        if(primeraCondicion.asBoolean()){
+        if (primeraCondicion.asBoolean()) {
             visit(ctx.bloque(0));
             return Valor.VACIO;
         }
@@ -356,18 +412,19 @@ public class MiVisitor extends PLATABaseVisitor<Valor> {
         int totalCondiciones = ctx.condicion().size(); // incluye las del IF y los ELSE_IF
         int totalBloques = ctx.bloque().size(); // incluye el del IF, ELSE_IF(s) y ELSE
 
-        for(int i=1; i<totalCondiciones;i++){
+        for (int i = 1; i < totalCondiciones; i++) {
             Valor elseIfCondiciones = visit(ctx.condicion(i));
-            if(elseIfCondiciones.asBoolean()){
+            if (elseIfCondiciones.asBoolean()) {
                 visit(ctx.bloque(i));
                 return Valor.VACIO;
             }
         }
 
-        //Else si existe
-        if (totalBloques>totalCondiciones) {
-            //-1 porque empiezas en el indice 0, y .size() devuelve el numero total de elementos que hay
-            visit(ctx.bloque(totalBloques - 1)); 
+        // Else si existe
+        if (totalBloques > totalCondiciones) {
+            // -1 porque empiezas en el indice 0, y .size() devuelve el numero total de
+            // elementos que hay
+            visit(ctx.bloque(totalBloques - 1));
         }
         return Valor.VACIO;
     }

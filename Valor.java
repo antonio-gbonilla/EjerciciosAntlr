@@ -55,6 +55,11 @@ public class Valor {
         return valor instanceof Double;
     }
 
+    // Comprueba si el valor interno es un String.
+    public boolean isString() {
+        return valor instanceof String;
+    }
+
     //! No entiendo porque sobrescribe
 
     @Override
