@@ -60,7 +60,11 @@ public class Valor {
         return valor instanceof String;
     }
 
-    //! No entiendo porque sobrescribe
+    // Comprueba si el valor interno es un Boolean.
+    public boolean isBoolean() {
+        return valor instanceof Boolean;
+    }
+
 
     @Override
     public int hashCode() {

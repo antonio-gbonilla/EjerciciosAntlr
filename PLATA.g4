@@ -1,5 +1,5 @@
 grammar PLATA;
-
+import PlataLexer;
 //------------ REGLA PRINCIPAL ------------
 programa: sentencia+ EOF;
 
@@ -16,21 +16,25 @@ frena: FRENA;
 asignacion: ID '=' expr;
 
 // if
-if_sentencia: 	IF '('condicion ')' bloque 
-				(ELSE_IF '('condicion ')' bloque)* 
+if_sentencia: 	IF '('expr ')' bloque 
+				(ELSE_IF '('expr ')' bloque)* 
 				(ELSE bloque)?;
 
+
 // while
-bucle_while: WHILE '('condicion ')' bloque;
+bucle_while: WHILE '('expr ')' bloque;
 
 
 // --- EXPRESIONES ---
 expr
-	: NOT expr		#notExpr
+	: MENOS expr 	#menosExpr
+	| NOT expr		#notExpr
 	| expr '*' expr	# MultiplicacionExpr // Mayor precedencia
 	| expr '/' expr	# DivisionExpr // Mayor precedencia
-	| expr '+' expr	# SumaExpr // Menor precedencia que * y /
-	| expr '-' expr	# RestaExpr // Menor precedencia que * y /
+	| expr '%' expr # ModuloExpr // Mayor precedencia
+	| expr '+' expr	# SumaExpr // Menor precedencia que *, / y %
+	| expr '-' expr	# RestaExpr // Menor precedencia que *, / y %
+	| expr operadorCondicional expr #condicionExpr 
 	| atomico		#atomicoExpr  //atomo
 	| '(' expr ')'	# ParentesisExpr // Precedencia máxima (pero no compite, sino que agrupa)
 	;
@@ -45,8 +49,6 @@ atomico
 // Bloque 
 bloque: '{' sentencia+ '}';
 
-//Condiciones
-condicion: expr operadorCondicional expr;
 
 operadorCondicional
 	: MAYOR
@@ -58,43 +60,3 @@ operadorCondicional
 	| AND
 	| OR
 	;
-
-
-// ----------- LEXER / TOKENS ----------
-
-//  Palabras reservadas tokes
-AVANZA: [Aa] 'vanza';
-GIRA: [Gg] 'ira';
-FRENA: [Pp] 'ara';
-WHILE: [Mm] 'ientras';
-IF: [Ss] 'i';
-ELSE_IF: [Ss]'iNo';
-ELSE: [Ss]'iNoSi';
-TRUE: [Vv]'erdadero';
-FALSE: [Ff]'also';
-NULL: [Nn]'ulo';
-
-//CONDICIONALES
-MAYOR_IGUAL: '>=';
-MENOR_IGUAL: '<=';
-MAYOR: '>';
-MENOR: '<';
-DISTINTO: '!=';
-IGUAL_QUE: '==';
-NOT: '!';
-AND: '&&';
-OR: '||';
-
-//Numeros
-INT: DIGITO+;
-FLOAT: ('-')? (DIGITO)+ '.' DIGITO+; ///!Corregir el signo -
-fragment DIGITO: [0-9];
-
-//String
-STRING: '"' (~["\r\n] | '""')* '"';
-
-ID: [a-zA-Z][a-zA-Z_0-9]*;
-
-LINE_COMMENT: '//' ~[\r\n]* -> skip;
-COMMENT : '/*' .*? '*/' -> skip ;
-WS: [ \t\n\r]+ -> skip; //DESCARTA LOS ESPACIOS, SALTOS DE LINEA Y TAB.

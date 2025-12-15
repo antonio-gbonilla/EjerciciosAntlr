@@ -58,6 +58,13 @@ public interface PLATAVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitBucle_while(PLATAParser.Bucle_whileContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code ModuloExpr}
+	 * labeled alternative in {@link PLATAParser#expr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitModuloExpr(PLATAParser.ModuloExprContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code notExpr}
 	 * labeled alternative in {@link PLATAParser#expr}.
 	 * @param ctx the parse tree
@@ -72,12 +79,26 @@ public interface PLATAVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitDivisionExpr(PLATAParser.DivisionExprContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code condicionExpr}
+	 * labeled alternative in {@link PLATAParser#expr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitCondicionExpr(PLATAParser.CondicionExprContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code ParentesisExpr}
 	 * labeled alternative in {@link PLATAParser#expr}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitParentesisExpr(PLATAParser.ParentesisExprContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code menosExpr}
+	 * labeled alternative in {@link PLATAParser#expr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMenosExpr(PLATAParser.MenosExprContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code SumaExpr}
 	 * labeled alternative in {@link PLATAParser#expr}.
@@ -140,12 +161,6 @@ public interface PLATAVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitBloque(PLATAParser.BloqueContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link PLATAParser#condicion}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitCondicion(PLATAParser.CondicionContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link PLATAParser#operadorCondicional}.
 	 * @param ctx the parse tree
