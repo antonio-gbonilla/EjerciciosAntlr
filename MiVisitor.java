@@ -8,7 +8,6 @@ public class MiVisitor extends PLATABaseVisitor<Valor> {
 
     @Override
     public Valor visitAsignacion(PLATAParser.AsignacionContext ctx) {
-        // !Cambiar seguramente en un futoro por lo comentado
 
         String nombre = ctx.ID().getText();
         Valor valor = (Valor) visit(ctx.expr());
@@ -41,7 +40,7 @@ public class MiVisitor extends PLATABaseVisitor<Valor> {
     public Valor visitGira(PLATAParser.GiraContext ctx) {
         String gira = ctx.GIRA().getText();
         Valor angulo = (Valor) visit(ctx.expr());
-        System.out.println("El roboto " + gira + " " + angulo.asDouble() + " angulos");
+        System.out.println("El roboto " + gira + " " + angulo.asDouble() + " grados");
         return Valor.VACIO;
     }
 
@@ -75,7 +74,7 @@ public class MiVisitor extends PLATABaseVisitor<Valor> {
             throw new PlataException("Indeterminacion 0/0");
 
         if (Math.abs(divisor.asDouble()) < VALOR_PEQUEÑO)
-            throw new PlataException("Indeterminacion " + divisor.asDouble() + " 0");
+            throw new PlataException("Indeterminacion el denominador " + ctx.expr(1).getText() + " = 0");
 
         System.out.println(dividendo.asDouble() / divisor.asDouble());
 
@@ -125,7 +124,7 @@ public class MiVisitor extends PLATABaseVisitor<Valor> {
 
     @Override
     public Valor visitNumeroAtomico(PLATAParser.NumeroAtomicoContext ctx) {
-        String numero = ctx.getText();// !repasar
+        String numero = ctx.getText();
         return new Valor(Double.valueOf(numero));
     }
 
@@ -147,6 +146,7 @@ public class MiVisitor extends PLATABaseVisitor<Valor> {
     public Valor visitCondicionExpr(PLATAParser.CondicionExprContext ctx) {
         Valor opIzquierdo = visit(ctx.expr(0));
         Valor opDerecho = visit(ctx.expr(1));
+
 
         // Obtiene el tipo de token del operador relacional/lógico
         int tipoToken = ctx.operadorCondicional().start.getType();
@@ -183,12 +183,15 @@ public class MiVisitor extends PLATABaseVisitor<Valor> {
                     Valor v = new Valor(opDerecho.equals(opIzquierdo));
                     return v;
                 }
-            case PLATAParser.AND:
-                return new Valor(opDerecho.asBoolean() && opIzquierdo.asBoolean());
-            case PLATAParser.OR:
-                return new Valor(opIzquierdo.asBoolean() || opDerecho.asBoolean());
-
-            default:
+        case PLATAParser.AND:
+            boolean izq = opIzquierdo.isBoolean() ? opIzquierdo.asBoolean() : opIzquierdo.asDouble() != 0;
+            boolean der = opDerecho.isBoolean() ? opDerecho.asBoolean() : opDerecho.asDouble() != 0;
+            return new Valor(izq && der);
+        case PLATAParser.OR:
+            boolean izq1 = opIzquierdo.isBoolean() ? opIzquierdo.asBoolean() : opIzquierdo.asDouble() != 0;
+            boolean der2 = opDerecho.isBoolean() ? opDerecho.asBoolean() : opDerecho.asDouble() != 0;
+            return new Valor(izq1 || der2);
+        default:
                 throw new RuntimeException("Operador desconocido: " + PLATAParser.VOCABULARY.getDisplayName(tipoToken));
         }
     }

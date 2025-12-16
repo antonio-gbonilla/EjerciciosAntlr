@@ -12,8 +12,8 @@ AVANZA=11
 GIRA=12
 FRENA=13
 WHILE=14
-ELSE=15
-ELSE_IF=16
+ELSE_IF=15
+ELSE=16
 IF=17
 TRUE=18
 FALSE=19
@@ -45,8 +45,8 @@ WS=37
 '+'=8
 '{'=9
 '}'=10
-'sino'=15
-'sinosi'=16
+'sinosi'=15
+'sino'=16
 'si'=17
 '>='=21
 '<='=22

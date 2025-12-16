@@ -17,7 +17,7 @@ public class PLATALexer extends Lexer {
 		new PredictionContextCache();
 	public static final int
 		T__0=1, T__1=2, T__2=3, T__3=4, T__4=5, T__5=6, T__6=7, T__7=8, T__8=9, 
-		T__9=10, AVANZA=11, GIRA=12, FRENA=13, WHILE=14, ELSE=15, ELSE_IF=16, 
+		T__9=10, AVANZA=11, GIRA=12, FRENA=13, WHILE=14, ELSE_IF=15, ELSE=16, 
 		IF=17, TRUE=18, FALSE=19, NULL=20, MAYOR_IGUAL=21, MENOR_IGUAL=22, MAYOR=23, 
 		MENOR=24, DISTINTO=25, IGUAL_QUE=26, NOT=27, AND=28, OR=29, MENOS=30, 
 		INT=31, FLOAT=32, STRING=33, ID=34, LINE_COMMENT=35, COMMENT=36, WS=37;
@@ -32,7 +32,7 @@ public class PLATALexer extends Lexer {
 	private static String[] makeRuleNames() {
 		return new String[] {
 			"T__0", "T__1", "T__2", "T__3", "T__4", "T__5", "T__6", "T__7", "T__8", 
-			"T__9", "AVANZA", "GIRA", "FRENA", "WHILE", "ELSE", "ELSE_IF", "IF", 
+			"T__9", "AVANZA", "GIRA", "FRENA", "WHILE", "ELSE_IF", "ELSE", "IF", 
 			"TRUE", "FALSE", "NULL", "MAYOR_IGUAL", "MENOR_IGUAL", "MAYOR", "MENOR", 
 			"DISTINTO", "IGUAL_QUE", "NOT", "AND", "OR", "MENOS", "INT", "FLOAT", 
 			"DIGITO", "STRING", "ID", "LINE_COMMENT", "COMMENT", "WS"
@@ -43,7 +43,7 @@ public class PLATALexer extends Lexer {
 	private static String[] makeLiteralNames() {
 		return new String[] {
 			null, "'('", "','", "')'", "'='", "'*'", "'/'", "'%'", "'+'", "'{'", 
-			"'}'", null, null, null, null, "'sino'", "'sinosi'", "'si'", null, null, 
+			"'}'", null, null, null, null, "'sinosi'", "'sino'", "'si'", null, null, 
 			null, "'>='", "'<='", "'>'", "'<'", "'!='", "'=='", "'!'", "'&&'", "'||'", 
 			"'-'"
 		};
@@ -52,7 +52,7 @@ public class PLATALexer extends Lexer {
 	private static String[] makeSymbolicNames() {
 		return new String[] {
 			null, null, null, null, null, null, null, null, null, null, null, "AVANZA", 
-			"GIRA", "FRENA", "WHILE", "ELSE", "ELSE_IF", "IF", "TRUE", "FALSE", "NULL", 
+			"GIRA", "FRENA", "WHILE", "ELSE_IF", "ELSE", "IF", "TRUE", "FALSE", "NULL", 
 			"MAYOR_IGUAL", "MENOR_IGUAL", "MAYOR", "MENOR", "DISTINTO", "IGUAL_QUE", 
 			"NOT", "AND", "OR", "MENOS", "INT", "FLOAT", "STRING", "ID", "LINE_COMMENT", 
 			"COMMENT", "WS"
@@ -135,8 +135,8 @@ public class PLATALexer extends Lexer {
 		"\n\u0001\n\u0001\n\u0001\n\u0001\n\u0001\n\u0001\n\u0001\u000b\u0001\u000b"+
 		"\u0001\u000b\u0001\u000b\u0001\u000b\u0001\f\u0001\f\u0001\f\u0001\f\u0001"+
 		"\f\u0001\r\u0001\r\u0001\r\u0001\r\u0001\r\u0001\r\u0001\r\u0001\r\u0001"+
-		"\r\u0001\u000e\u0001\u000e\u0001\u000e\u0001\u000e\u0001\u000e\u0001\u000f"+
-		"\u0001\u000f\u0001\u000f\u0001\u000f\u0001\u000f\u0001\u000f\u0001\u000f"+
+		"\r\u0001\u000e\u0001\u000e\u0001\u000e\u0001\u000e\u0001\u000e\u0001\u000e"+
+		"\u0001\u000e\u0001\u000f\u0001\u000f\u0001\u000f\u0001\u000f\u0001\u000f"+
 		"\u0001\u0010\u0001\u0010\u0001\u0010\u0001\u0011\u0001\u0011\u0001\u0011"+
 		"\u0001\u0011\u0001\u0011\u0001\u0011\u0001\u0011\u0001\u0011\u0001\u0011"+
 		"\u0001\u0011\u0001\u0012\u0001\u0012\u0001\u0012\u0001\u0012\u0001\u0012"+
@@ -184,7 +184,7 @@ public class PLATALexer extends Lexer {
 		"\u000f[\u0001\u0000\u0000\u0000\u0011]\u0001\u0000\u0000\u0000\u0013_"+
 		"\u0001\u0000\u0000\u0000\u0015a\u0001\u0000\u0000\u0000\u0017h\u0001\u0000"+
 		"\u0000\u0000\u0019m\u0001\u0000\u0000\u0000\u001br\u0001\u0000\u0000\u0000"+
-		"\u001d{\u0001\u0000\u0000\u0000\u001f\u0080\u0001\u0000\u0000\u0000!\u0087"+
+		"\u001d{\u0001\u0000\u0000\u0000\u001f\u0082\u0001\u0000\u0000\u0000!\u0087"+
 		"\u0001\u0000\u0000\u0000#\u008a\u0001\u0000\u0000\u0000%\u0094\u0001\u0000"+
 		"\u0000\u0000\'\u009a\u0001\u0000\u0000\u0000)\u009f\u0001\u0000\u0000"+
 		"\u0000+\u00a2\u0001\u0000\u0000\u0000-\u00a5\u0001\u0000\u0000\u0000/"+
@@ -211,10 +211,10 @@ public class PLATALexer extends Lexer {
 		"uv\u0005n\u0000\u0000vw\u0005t\u0000\u0000wx\u0005r\u0000\u0000xy\u0005"+
 		"a\u0000\u0000yz\u0005s\u0000\u0000z\u001c\u0001\u0000\u0000\u0000{|\u0005"+
 		"s\u0000\u0000|}\u0005i\u0000\u0000}~\u0005n\u0000\u0000~\u007f\u0005o"+
-		"\u0000\u0000\u007f\u001e\u0001\u0000\u0000\u0000\u0080\u0081\u0005s\u0000"+
-		"\u0000\u0081\u0082\u0005i\u0000\u0000\u0082\u0083\u0005n\u0000\u0000\u0083"+
-		"\u0084\u0005o\u0000\u0000\u0084\u0085\u0005s\u0000\u0000\u0085\u0086\u0005"+
-		"i\u0000\u0000\u0086 \u0001\u0000\u0000\u0000\u0087\u0088\u0005s\u0000"+
+		"\u0000\u0000\u007f\u0080\u0005s\u0000\u0000\u0080\u0081\u0005i\u0000\u0000"+
+		"\u0081\u001e\u0001\u0000\u0000\u0000\u0082\u0083\u0005s\u0000\u0000\u0083"+
+		"\u0084\u0005i\u0000\u0000\u0084\u0085\u0005n\u0000\u0000\u0085\u0086\u0005"+
+		"o\u0000\u0000\u0086 \u0001\u0000\u0000\u0000\u0087\u0088\u0005s\u0000"+
 		"\u0000\u0088\u0089\u0005i\u0000\u0000\u0089\"\u0001\u0000\u0000\u0000"+
 		"\u008a\u008b\u0007\u0004\u0000\u0000\u008b\u008c\u0005e\u0000\u0000\u008c"+
 		"\u008d\u0005r\u0000\u0000\u008d\u008e\u0005d\u0000\u0000\u008e\u008f\u0005"+

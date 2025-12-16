@@ -24,12 +24,12 @@
 
 public class Valor {
 
-    //Creas un objeto de tipo valor que contenga un objeto Vacio
+    // Creas un objeto de tipo valor que contenga un objeto Vacio
     public static Valor VACIO = new Valor(new Object());
 
     // El valor interno real (puede ser Double, Boolean, String, etc.)
     final Object valor;
-    
+
     // Constructor: recibe el valor real que será envuelto.
     public Valor(Object valor) {
         this.valor = valor;
@@ -37,12 +37,15 @@ public class Valor {
 
     // Convierte el valor interno a boolean.
     public Boolean asBoolean() {
-        return (Boolean)valor;
+        if (!isBoolean()) {
+            throw new PlataException("No se puede usar " + valor + " como booleano");
+        }
+        return (Boolean) valor;
     }
 
     // Convierte el valor interno a double.
     public Double asDouble() {
-        return (Double)valor;
+        return (Double) valor;
     }
 
     // Convierte cualquier valor interno a String.
@@ -65,10 +68,9 @@ public class Valor {
         return valor instanceof Boolean;
     }
 
-
     @Override
     public int hashCode() {
-        if(valor == null) {
+        if (valor == null) {
             return 0;
         }
         return this.valor.hashCode();
@@ -78,17 +80,18 @@ public class Valor {
     public boolean equals(Object o) {
 
         // Si comparo la referencia del valor, true
-        if(valor == o) {//comprueba la referencia
+        if (valor == o) {// comprueba la referencia
             return true;
         }
 
-        // Si el valor interno o el objeto comparado es null, o el tipo no coincide, no son iguales
-        if(valor == null || o == null || o.getClass() != this.getClass()) {//comprueba el tipo de objeto
+        // Si el valor interno o el objeto comparado es null, o el tipo no coincide, no
+        // son iguales
+        if (valor == null || o == null || o.getClass() != this.getClass()) {// comprueba el tipo de objeto
             return false;
         }
 
         // Comparo el valor interno
-        Valor that = (Valor)o;
+        Valor that = (Valor) o;
 
         return this.valor.equals(that.valor);
     }

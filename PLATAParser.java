@@ -17,7 +17,7 @@ public class PLATAParser extends Parser {
 		new PredictionContextCache();
 	public static final int
 		T__0=1, T__1=2, T__2=3, T__3=4, T__4=5, T__5=6, T__6=7, T__7=8, T__8=9, 
-		T__9=10, AVANZA=11, GIRA=12, FRENA=13, WHILE=14, ELSE=15, ELSE_IF=16, 
+		T__9=10, AVANZA=11, GIRA=12, FRENA=13, WHILE=14, ELSE_IF=15, ELSE=16, 
 		IF=17, TRUE=18, FALSE=19, NULL=20, MAYOR_IGUAL=21, MENOR_IGUAL=22, MAYOR=23, 
 		MENOR=24, DISTINTO=25, IGUAL_QUE=26, NOT=27, AND=28, OR=29, MENOS=30, 
 		INT=31, FLOAT=32, STRING=33, ID=34, LINE_COMMENT=35, COMMENT=36, WS=37;
@@ -36,7 +36,7 @@ public class PLATAParser extends Parser {
 	private static String[] makeLiteralNames() {
 		return new String[] {
 			null, "'('", "','", "')'", "'='", "'*'", "'/'", "'%'", "'+'", "'{'", 
-			"'}'", null, null, null, null, "'sino'", "'sinosi'", "'si'", null, null, 
+			"'}'", null, null, null, null, "'sinosi'", "'sino'", "'si'", null, null, 
 			null, "'>='", "'<='", "'>'", "'<'", "'!='", "'=='", "'!'", "'&&'", "'||'", 
 			"'-'"
 		};
@@ -45,7 +45,7 @@ public class PLATAParser extends Parser {
 	private static String[] makeSymbolicNames() {
 		return new String[] {
 			null, null, null, null, null, null, null, null, null, null, null, "AVANZA", 
-			"GIRA", "FRENA", "WHILE", "ELSE", "ELSE_IF", "IF", "TRUE", "FALSE", "NULL", 
+			"GIRA", "FRENA", "WHILE", "ELSE_IF", "ELSE", "IF", "TRUE", "FALSE", "NULL", 
 			"MAYOR_IGUAL", "MENOR_IGUAL", "MAYOR", "MENOR", "DISTINTO", "IGUAL_QUE", 
 			"NOT", "AND", "OR", "MENOS", "INT", "FLOAT", "STRING", "ID", "LINE_COMMENT", 
 			"COMMENT", "WS"
@@ -1216,11 +1216,11 @@ public class PLATAParser extends Parser {
 		"\u000078\u0005\u0004\u0000\u000089\u0003\u0010\b\u00009\u000b\u0001\u0000"+
 		"\u0000\u0000:;\u0005\u0011\u0000\u0000;<\u0005\u0001\u0000\u0000<=\u0003"+
 		"\u0010\b\u0000=>\u0005\u0003\u0000\u0000>G\u0003\u0014\n\u0000?@\u0005"+
-		"\u0010\u0000\u0000@A\u0005\u0001\u0000\u0000AB\u0003\u0010\b\u0000BC\u0005"+
+		"\u000f\u0000\u0000@A\u0005\u0001\u0000\u0000AB\u0003\u0010\b\u0000BC\u0005"+
 		"\u0003\u0000\u0000CD\u0003\u0014\n\u0000DF\u0001\u0000\u0000\u0000E?\u0001"+
 		"\u0000\u0000\u0000FI\u0001\u0000\u0000\u0000GE\u0001\u0000\u0000\u0000"+
 		"GH\u0001\u0000\u0000\u0000HL\u0001\u0000\u0000\u0000IG\u0001\u0000\u0000"+
-		"\u0000JK\u0005\u000f\u0000\u0000KM\u0003\u0014\n\u0000LJ\u0001\u0000\u0000"+
+		"\u0000JK\u0005\u0010\u0000\u0000KM\u0003\u0014\n\u0000LJ\u0001\u0000\u0000"+
 		"\u0000LM\u0001\u0000\u0000\u0000M\r\u0001\u0000\u0000\u0000NO\u0005\u000e"+
 		"\u0000\u0000OP\u0005\u0001\u0000\u0000PQ\u0003\u0010\b\u0000QR\u0005\u0003"+
 		"\u0000\u0000RS\u0003\u0014\n\u0000S\u000f\u0001\u0000\u0000\u0000TU\u0006"+
