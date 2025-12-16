@@ -29,12 +29,12 @@ bucle_while: WHILE '('expr ')' bloque;
 expr
 	: MENOS expr 	#menosExpr
 	| NOT expr		#notExpr
-	| expr '*' expr	# MultiplicacionExpr // Mayor precedencia
-	| expr '/' expr	# DivisionExpr // Mayor precedencia
-	| expr '%' expr # ModuloExpr // Mayor precedencia
-	| expr '+' expr	# SumaExpr // Menor precedencia que *, / y %
-	| expr '-' expr	# RestaExpr // Menor precedencia que *, / y %
-	| expr operadorCondicional expr #condicionExpr 
+	| expr op=(MULTIPLICACION | DIVISION | MODULO) expr	# MultiplicacionExpr // Mayor precedencia
+	| expr op=(SUMA | MENOS) expr	# SumaExpr 
+	| expr op=(MAYOR_IGUAL | MENOR_IGUAL | MENOR | MAYOR) expr # RelacionesExpr 
+	| expr op=(IGUAL_QUE | DISTINTO) expr #IgualdadesExpr
+	| expr AND expr	# AndExpr 
+	| expr OR expr	# ORExpr // Menor precedencia 
 	| atomico		#atomicoExpr  //atomo
 	| '(' expr ')'	# ParentesisExpr // Precedencia máxima (pero no compite, sino que agrupa)
 	;
@@ -49,14 +49,3 @@ atomico
 // Bloque 
 bloque: '{' sentencia+ '}';
 
-
-operadorCondicional
-	: MAYOR
-	| MENOR
-	| MAYOR_IGUAL
-	| MENOR_IGUAL
-	| DISTINTO
-	| IGUAL_QUE
-	| AND
-	| OR
-	;

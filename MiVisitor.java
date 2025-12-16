@@ -46,48 +46,58 @@ public class MiVisitor extends PLATABaseVisitor<Valor> {
 
     @Override
     public Valor visitSumaExpr(PLATAParser.SumaExprContext ctx) {
-        Valor sumando1 = visit(ctx.expr(0));
-        Valor sumando2 = visit(ctx.expr(1));
-        if (sumando1.isString() || sumando2.isString()) {
-            System.out.println(sumando1.asString() + sumando2.asString());
-            return new Valor(sumando1.asString() + sumando2.asString());
+        Valor opIzquierdo = visit(ctx.expr(0));
+        Valor opDerecho = visit(ctx.expr(1));
+
+        switch (ctx.op.getType()) {
+            case PLATAParser.SUMA:
+                if (opIzquierdo.isString() || opDerecho.isString()) {
+                    System.out.println(opIzquierdo.asString() + opDerecho.asString());
+                    return new Valor(opIzquierdo.asString() + opDerecho.asString());
+                }
+                System.out.println(opIzquierdo.asDouble() + opDerecho.asDouble());
+                return new Valor(opIzquierdo.asDouble() + opDerecho.asDouble());
+
+            case PLATAParser.MENOS:
+                System.out.println(opIzquierdo.asDouble() - opDerecho.asDouble());
+
+                return new Valor(opIzquierdo.asDouble() - opDerecho.asDouble());
+            default:
+                throw new RuntimeException(
+                        "Operador desconocido: " + PLATAParser.VOCABULARY.getDisplayName(ctx.op.getType()));
+
         }
-        System.out.println(sumando1.asDouble() + sumando2.asDouble());
-        return new Valor(sumando1.asDouble() + sumando2.asDouble());
-    }
-
-    @Override
-    public Valor visitRestaExpr(PLATAParser.RestaExprContext ctx) {
-        Valor minuendo = visit(ctx.expr(0));
-        Valor sustraendo = visit(ctx.expr(1));
-        System.out.println(minuendo.asDouble() - sustraendo.asDouble());
-
-        return new Valor(minuendo.asDouble() - sustraendo.asDouble());
-    }
-
-    @Override
-    public Valor visitDivisionExpr(PLATAParser.DivisionExprContext ctx) {
-        Valor dividendo = visit(ctx.expr(0));
-        Valor divisor = visit(ctx.expr(1));
-
-        if (Math.abs(dividendo.asDouble()) < VALOR_PEQUEÑO && Math.abs(divisor.asDouble()) < VALOR_PEQUEÑO)
-            throw new PlataException("Indeterminacion 0/0");
-
-        if (Math.abs(divisor.asDouble()) < VALOR_PEQUEÑO)
-            throw new PlataException("Indeterminacion el denominador " + ctx.expr(1).getText() + " = 0");
-
-        System.out.println(dividendo.asDouble() / divisor.asDouble());
-
-        return new Valor(dividendo.asDouble() / divisor.asDouble());
     }
 
     @Override
     public Valor visitMultiplicacionExpr(PLATAParser.MultiplicacionExprContext ctx) {
-        Valor factor1 = visit(ctx.expr(0));
-        Valor factor2 = visit(ctx.expr(1));
-        System.out.println(factor1.asDouble() * factor2.asDouble());
+        Valor opIzquierdo = visit(ctx.expr(0));
+        Valor opDerecho = visit(ctx.expr(1));
+        switch (ctx.op.getType()) {
+            case PLATAParser.MULTIPLICACION:
+                System.out.println(opIzquierdo.asDouble() * opDerecho.asDouble());
+                return new Valor(opIzquierdo.asDouble() * opDerecho.asDouble());
+            case PLATAParser.DIVISION:
 
-        return new Valor(factor1.asDouble() * factor2.asDouble());
+                if (Math.abs(opIzquierdo.asDouble()) < VALOR_PEQUEÑO && Math.abs(opDerecho.asDouble()) < VALOR_PEQUEÑO)
+                    throw new PlataException("Indeterminacion 0/0");
+
+                if (Math.abs(opDerecho.asDouble()) < VALOR_PEQUEÑO)
+                    throw new PlataException("Indeterminacion el denominador " + ctx.expr(1).getText() + " = 0");
+
+                System.out.println(opIzquierdo.asDouble() / opDerecho.asDouble());
+
+                return new Valor(opIzquierdo.asDouble() / opDerecho.asDouble());
+            case PLATAParser.MODULO:
+                if (Math.abs(opDerecho.asDouble()) < VALOR_PEQUEÑO)
+                    throw new PlataException("Modulo por cero");
+
+                return new Valor(opIzquierdo.asDouble() % opDerecho.asDouble());
+            default:
+                throw new RuntimeException(
+                        "Operador desconocido: " + PLATAParser.VOCABULARY.getDisplayName(ctx.op.getType()));
+        }
+
     }
 
     @Override
@@ -142,24 +152,62 @@ public class MiVisitor extends PLATABaseVisitor<Valor> {
         return new Valor(!value.asBoolean());
     }
 
+    
     @Override
-    public Valor visitCondicionExpr(PLATAParser.CondicionExprContext ctx) {
+    public Valor visitMenosExpr(PLATAParser.MenosExprContext ctx) {
+        Valor valor = visit(ctx.expr());
+        if (valor.isDouble())
+            return new Valor(valor.asDouble() * (-1));
+        else
+            throw new PlataException("Quieres poner un numero negativo que no es un numero: " + valor);
+    }
+
+    @Override
+    public Valor visitRelacionesExpr(PLATAParser.RelacionesExprContext ctx) {
         Valor opIzquierdo = visit(ctx.expr(0));
         Valor opDerecho = visit(ctx.expr(1));
 
-
-        // Obtiene el tipo de token del operador relacional/lógico
-        int tipoToken = ctx.operadorCondicional().start.getType();
-
-        switch (tipoToken) {
-            case PLATAParser.MAYOR:
-                return new Valor(opIzquierdo.asDouble() > opDerecho.asDouble());
+        switch (ctx.op.getType()) {
             case PLATAParser.MENOR:
                 return new Valor(opIzquierdo.asDouble() < opDerecho.asDouble());
+            case PLATAParser.MAYOR:
+                return new Valor(opIzquierdo.asDouble() > opDerecho.asDouble());
             case PLATAParser.MAYOR_IGUAL:
                 return new Valor(opIzquierdo.asDouble() >= opDerecho.asDouble());
             case PLATAParser.MENOR_IGUAL:
                 return new Valor(opIzquierdo.asDouble() <= opDerecho.asDouble());
+            default:
+                throw new PlataException(
+                        "Operador desconocido: " + PLATAParser.VOCABULARY.getDisplayName(ctx.op.getType()));
+        }
+
+    }
+
+    @Override
+    public Valor visitAndExpr(PLATAParser.AndExprContext ctx) {
+        Valor opIzquierdo = visit(ctx.expr(0));
+        Valor opDerecho = visit(ctx.expr(1));
+        boolean izq = opIzquierdo.isBoolean() ? opIzquierdo.asBoolean() : opIzquierdo.asDouble() != 0;
+        boolean der = opDerecho.isBoolean() ? opDerecho.asBoolean() : opDerecho.asDouble() != 0;
+        return new Valor(izq && der);
+    }
+
+    @Override
+    public Valor visitIgualdadesExpr(PLATAParser.IgualdadesExprContext ctx) {
+        Valor opIzquierdo = visit(ctx.expr(0));
+        Valor opDerecho = visit(ctx.expr(1));
+        switch (ctx.op.getType()) {
+            case PLATAParser.IGUAL_QUE:
+                // Caso especial: comparación con tolerancia entre números
+                if (opIzquierdo.isDouble() && opDerecho.isDouble()) {
+                    // Son iguales si la diferencia es menor que la tolerancia
+                    Valor v = new Valor(Math.abs(opIzquierdo.asDouble() - opDerecho.asDouble()) < VALOR_PEQUEÑO);
+                    return v;
+                } else {
+                    // Para String, boolean, etc. se usa equals normal
+                    Valor v = new Valor(opDerecho.equals(opIzquierdo));
+                    return v;
+                }
             case PLATAParser.DISTINTO:
                 // Caso especial: si ambos son números, se usa comparación con tolerancia
                 if (opIzquierdo.isDouble() && opDerecho.isDouble()) {
@@ -172,29 +220,23 @@ public class MiVisitor extends PLATABaseVisitor<Valor> {
                     Valor v = new Valor(!opDerecho.equals(opIzquierdo));
                     return v;
                 }
-            case PLATAParser.IGUAL_QUE:
-                // Caso especial: comparación con tolerancia entre números
-                if (opIzquierdo.isDouble() && opDerecho.isDouble()) {
-                    // Son iguales si la diferencia es menor que la tolerancia
-                    Valor v = new Valor(Math.abs(opIzquierdo.asDouble() - opDerecho.asDouble()) < VALOR_PEQUEÑO);
-                    return v;
-                } else {
-                    // Para String, boolean, etc. se usa equals normal
-                    Valor v = new Valor(opDerecho.equals(opIzquierdo));
-                    return v;
-                }
-        case PLATAParser.AND:
-            boolean izq = opIzquierdo.isBoolean() ? opIzquierdo.asBoolean() : opIzquierdo.asDouble() != 0;
-            boolean der = opDerecho.isBoolean() ? opDerecho.asBoolean() : opDerecho.asDouble() != 0;
-            return new Valor(izq && der);
-        case PLATAParser.OR:
-            boolean izq1 = opIzquierdo.isBoolean() ? opIzquierdo.asBoolean() : opIzquierdo.asDouble() != 0;
-            boolean der2 = opDerecho.isBoolean() ? opDerecho.asBoolean() : opDerecho.asDouble() != 0;
-            return new Valor(izq1 || der2);
-        default:
-                throw new RuntimeException("Operador desconocido: " + PLATAParser.VOCABULARY.getDisplayName(tipoToken));
+            default:
+                throw new PlataException(
+                        "Operador desconocido: " + PLATAParser.VOCABULARY.getDisplayName(ctx.op.getType()));
+
         }
     }
+
+    @Override
+    public Valor visitORExpr(PLATAParser.ORExprContext ctx) {
+        Valor opIzquierdo = visit(ctx.expr(0));
+        Valor opDerecho = visit(ctx.expr(1));
+
+        boolean izq1 = opIzquierdo.isBoolean() ? opIzquierdo.asBoolean() : opIzquierdo.asDouble() != 0;
+        boolean der2 = opDerecho.isBoolean() ? opDerecho.asBoolean() : opDerecho.asDouble() != 0;
+        return new Valor(izq1 || der2);
+    }
+
 
     @Override
     public Valor visitBucle_while(PLATAParser.Bucle_whileContext ctx) {
@@ -253,25 +295,5 @@ public class MiVisitor extends PLATABaseVisitor<Valor> {
         return Valor.VACIO;
     }
 
-    @Override
-    public Valor visitMenosExpr(PLATAParser.MenosExprContext ctx) {
-        Valor valor = visit(ctx.expr());
-        if (valor.isDouble())
-            return new Valor(valor.asDouble() * (-1));
-        else
-            throw new PlataException("Quieres poner un numero negativo que no es un numero: " + valor);
-    }
-
-    @Override
-    public Valor visitModuloExpr(PLATAParser.ModuloExprContext ctx) {
-        Valor operador1 = this.visit(ctx.expr(0));
-        Valor operador2 = this.visit(ctx.expr(1));
-
-        if (Math.abs(operador2.asDouble()) < VALOR_PEQUEÑO)
-            throw new PlataException("Modulo por cero");
-
-        return new Valor(operador1.asDouble() % operador2.asDouble());
-
-    }
 
 }

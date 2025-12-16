@@ -1,7 +1,7 @@
 lexer grammar PlataLexer;
 // ----------- LEXER / TOKENS ----------
 
-//  Palabras reservadas tokes
+//  PALABRAS RESERCADAS
 AVANZA: [Aa] 'vanza';
 GIRA: [Gg] 'ira';
 FRENA: [Pp] 'ara';
@@ -13,6 +13,13 @@ TRUE: [Vv]'erdadero';
 FALSE: [Ff]'also';
 NULL: [Nn]'ulo';
 
+//OPERADORES ARITMETICOS
+MENOS: '-';
+MULTIPLICACION: '*';
+DIVISION: '/';
+MODULO: '%';
+SUMA: '+';
+
 //CONDICIONALES
 MAYOR_IGUAL: '>=';
 MENOR_IGUAL: '<=';
@@ -23,7 +30,7 @@ IGUAL_QUE: '==';
 NOT: '!';
 AND: '&&';
 OR: '||';
-MENOS: '-';
+
 
 //Numeros
 INT: DIGITO+;
