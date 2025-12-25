@@ -16,7 +16,7 @@ public class PLATALexer extends Lexer {
 	protected static final PredictionContextCache _sharedContextCache =
 		new PredictionContextCache();
 	public static final int
-		T__0=1, T__1=2, T__2=3, T__3=4, T__4=5, T__5=6, AVANZA=7, GIRA=8, FRENA=9, 
+		T__0=1, T__1=2, T__2=3, T__3=4, T__4=5, T__5=6, AVANZA=7, GIRA=8, PARA=9, 
 		WHILE=10, ELSE_IF=11, ELSE=12, IF=13, TRUE=14, FALSE=15, NULL=16, MENOS=17, 
 		MULTIPLICACION=18, DIVISION=19, MODULO=20, SUMA=21, MAYOR_IGUAL=22, MENOR_IGUAL=23, 
 		MAYOR=24, MENOR=25, DISTINTO=26, IGUAL_QUE=27, NOT=28, AND=29, OR=30, 
@@ -31,7 +31,7 @@ public class PLATALexer extends Lexer {
 
 	private static String[] makeRuleNames() {
 		return new String[] {
-			"T__0", "T__1", "T__2", "T__3", "T__4", "T__5", "AVANZA", "GIRA", "FRENA", 
+			"T__0", "T__1", "T__2", "T__3", "T__4", "T__5", "AVANZA", "GIRA", "PARA", 
 			"WHILE", "ELSE_IF", "ELSE", "IF", "TRUE", "FALSE", "NULL", "MENOS", "MULTIPLICACION", 
 			"DIVISION", "MODULO", "SUMA", "MAYOR_IGUAL", "MENOR_IGUAL", "MAYOR", 
 			"MENOR", "DISTINTO", "IGUAL_QUE", "NOT", "AND", "OR", "INT", "FLOAT", 
@@ -51,8 +51,8 @@ public class PLATALexer extends Lexer {
 	private static final String[] _LITERAL_NAMES = makeLiteralNames();
 	private static String[] makeSymbolicNames() {
 		return new String[] {
-			null, null, null, null, null, null, null, "AVANZA", "GIRA", "FRENA", 
-			"WHILE", "ELSE_IF", "ELSE", "IF", "TRUE", "FALSE", "NULL", "MENOS", "MULTIPLICACION", 
+			null, null, null, null, null, null, null, "AVANZA", "GIRA", "PARA", "WHILE", 
+			"ELSE_IF", "ELSE", "IF", "TRUE", "FALSE", "NULL", "MENOS", "MULTIPLICACION", 
 			"DIVISION", "MODULO", "SUMA", "MAYOR_IGUAL", "MENOR_IGUAL", "MAYOR", 
 			"MENOR", "DISTINTO", "IGUAL_QUE", "NOT", "AND", "OR", "INT", "FLOAT", 
 			"STRING", "ID", "LINE_COMMENT", "COMMENT", "WS"

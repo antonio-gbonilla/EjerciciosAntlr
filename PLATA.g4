@@ -4,40 +4,58 @@ import PlataLexer;
 programa: sentencia+ EOF;
 
 //-------------- LINEAS A PROCESAR -----------
-sentencia: avanza | gira | frena | asignacion | if_sentencia | bucle_while | expr; //!verbos
+sentencia: avanza | gira | para | asignacion | if_sentencia | bucle_while | expr_aritmeticas; //!verbos
 
 // ----------- METODOS ------------
-avanza: AVANZA '(' expr ',' expr ')';
-gira: GIRA '(' expr ')';
-frena: FRENA;
+avanza: AVANZA '(' expr_aritmeticas ',' expr_aritmeticas ')';
+gira: GIRA '(' expr_aritmeticas ')';
+para: PARA;
 
 // ---------------- SENTENCIAS ESPECIALES --------------
 //asignacion
 asignacion: ID '=' expr;
 
 // if
-if_sentencia: 	IF '('expr ')' bloque 
-				(ELSE_IF '('expr ')' bloque)* 
+if_sentencia: 	IF '('expr_logica')' bloque 
+				(ELSE_IF '('expr_logica')' bloque)* 
 				(ELSE bloque)?;
 
 
 // while
-bucle_while: WHILE '('expr ')' bloque;
-
+bucle_while: WHILE '('expr_logica')' bloque;
 
 // --- EXPRESIONES ---
 expr
-	: MENOS expr 	#menosExpr
-	| NOT expr		#notExpr
-	| expr op=(MULTIPLICACION | DIVISION | MODULO) expr	# MultiplicacionExpr // Mayor precedencia
-	| expr op=(SUMA | MENOS) expr	# SumaExpr 
-	| expr op=(MAYOR_IGUAL | MENOR_IGUAL | MENOR | MAYOR) expr # RelacionesExpr 
-	| expr op=(IGUAL_QUE | DISTINTO) expr #IgualdadesExpr
-	| expr AND expr	# AndExpr 
-	| expr OR expr	# ORExpr // Menor precedencia 
-	| atomico		#atomicoExpr  //atomo
-	| '(' expr ')'	# ParentesisExpr // Precedencia máxima (pero no compite, sino que agrupa)
+	: expr_aritmeticas
+	| expr_relacionales
+	| expr_logica
 	;
+expr_aritmeticas
+	: MENOS expr_aritmeticas 	#MenosExprAritmetica
+	| expr_aritmeticas op=(MULTIPLICACION | DIVISION | MODULO) expr_aritmeticas	# MultiplicacionExprAritmetica // Mayor precedencia 
+	| expr_aritmeticas op=(SUMA | MENOS) expr_aritmeticas	# SumaExprAritmetica
+	| atomico		#AtomicoExprAritmetica  //atomo 
+	| '(' expr_aritmeticas ')'	# ParentesisExprAritmetica // Precedencia máxima (pero no compite, sino que agrupa)
+	;
+
+// operadores relacionales (de comparacion: <,>,>=,<=, == ,!=), operan numero operado con numero = (true o false)
+expr_relacionales
+	: expr_aritmeticas op=(MAYOR_IGUAL | MENOR_IGUAL | MENOR | MAYOR) expr_aritmeticas # RelacionesExprRelacionales
+	| expr_aritmeticas op=(IGUAL_QUE | DISTINTO) expr_aritmeticas #IgualdadesExprRelacionales 
+	| '(' expr_relacionales ')' #ParentesisExprRelacionales
+	;
+
+// operares logicos (AND , OR, NOT), estos operan logico con logico y el resultado es logico(true o false).
+expr_logica
+	: NOT expr_logica	#NotExpr
+	| expr_logica AND expr_logica # AndExprLogica
+	| expr_logica OR expr_logica	# ORExprLogica // Menor precedencia
+	| expr_relacionales #LogicaExprRelacionales
+	| (TRUE | FALSE) #BoolExprLogica
+	| ID #IdExprLogica
+	| '(' expr_logica ')' #ParentesisExprLogica
+	;
+
 
 atomico
 	: (INT | FLOAT) #numeroAtomico 

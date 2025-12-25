@@ -22,32 +22,32 @@ public class MiVisitor extends PLATABaseVisitor<Valor> {
     @Override
     public Valor visitAvanza(PLATAParser.AvanzaContext ctx) {
         String avanza = ctx.AVANZA().getText();
-        Valor valor1 = (Valor) visit(ctx.expr(0));
-        Valor valor2 = (Valor) visit(ctx.expr(1));
+        Valor valor1 = (Valor) visit(ctx.expr_aritmeticas(0));
+        Valor valor2 = (Valor) visit(ctx.expr_aritmeticas(1));
         System.out.println("El roboto " + avanza + " " + valor1.asDouble() +
                 " metros a una velicidad de " + valor2.asDouble() + " m/s");
         return Valor.VACIO;
     }
 
     @Override
-    public Valor visitFrena(PLATAParser.FrenaContext ctx) {
-        String frena = ctx.FRENA().getText();
-        System.out.println("El robot empieza a frenar ejecuta el siguiente comando " + frena);
+    public Valor visitPara(PLATAParser.ParaContext ctx) {
+        String para = ctx.PARA().getText();
+        System.out.println("El robot empieza a frenar ejecuta el siguiente comando " + para);
         return Valor.VACIO;
     }
 
     @Override
     public Valor visitGira(PLATAParser.GiraContext ctx) {
         String gira = ctx.GIRA().getText();
-        Valor angulo = (Valor) visit(ctx.expr());
+        Valor angulo = (Valor) visit(ctx.expr_aritmeticas());
         System.out.println("El roboto " + gira + " " + angulo.asDouble() + " grados");
         return Valor.VACIO;
     }
 
     @Override
-    public Valor visitSumaExpr(PLATAParser.SumaExprContext ctx) {
-        Valor opIzquierdo = visit(ctx.expr(0));
-        Valor opDerecho = visit(ctx.expr(1));
+    public Valor visitSumaExprAritmetica(PLATAParser.SumaExprAritmeticaContext ctx) {
+        Valor opIzquierdo = visit(ctx.expr_aritmeticas(0));
+        Valor opDerecho = visit(ctx.expr_aritmeticas(1));
 
         switch (ctx.op.getType()) {
             case PLATAParser.SUMA:
@@ -70,9 +70,9 @@ public class MiVisitor extends PLATABaseVisitor<Valor> {
     }
 
     @Override
-    public Valor visitMultiplicacionExpr(PLATAParser.MultiplicacionExprContext ctx) {
-        Valor opIzquierdo = visit(ctx.expr(0));
-        Valor opDerecho = visit(ctx.expr(1));
+    public Valor visitMultiplicacionExprAritmetica(PLATAParser.MultiplicacionExprAritmeticaContext ctx) {
+        Valor opIzquierdo = visit(ctx.expr_aritmeticas(0));
+        Valor opDerecho = visit(ctx.expr_aritmeticas(1));
         switch (ctx.op.getType()) {
             case PLATAParser.MULTIPLICACION:
                 System.out.println(opIzquierdo.asDouble() * opDerecho.asDouble());
@@ -83,7 +83,8 @@ public class MiVisitor extends PLATABaseVisitor<Valor> {
                     throw new PlataException("Indeterminacion 0/0");
 
                 if (Math.abs(opDerecho.asDouble()) < VALOR_PEQUEÑO)
-                    throw new PlataException("Indeterminacion el denominador " + ctx.expr(1).getText() + " = 0");
+                    throw new PlataException(
+                            "Indeterminacion el denominador " + ctx.expr_aritmeticas(1).getText() + " = 0");
 
                 System.out.println(opIzquierdo.asDouble() / opDerecho.asDouble());
 
@@ -101,8 +102,8 @@ public class MiVisitor extends PLATABaseVisitor<Valor> {
     }
 
     @Override
-    public Valor visitParentesisExpr(PLATAParser.ParentesisExprContext ctx) {
-        return visit(ctx.expr());
+    public Valor visitParentesisExprAritmetica(PLATAParser.ParentesisExprAritmeticaContext ctx) {
+        return visit(ctx.expr_aritmeticas());
     }
 
     @Override
@@ -133,6 +134,17 @@ public class MiVisitor extends PLATABaseVisitor<Valor> {
     }
 
     @Override
+    public Valor visitIdExprLogica(PLATAParser.IdExprLogicaContext ctx) {
+        String id = ctx.ID().getText();
+        Valor valor = variables.get(id);
+        if (valor == null)
+            throw new PlataException("Variable no definida: " + id);
+        if (!valor.isBoolean())
+            throw new PlataException("Parametro id no es de tipo Boolean");
+        return valor;
+    }
+
+    @Override
     public Valor visitNumeroAtomico(PLATAParser.NumeroAtomicoContext ctx) {
         String numero = ctx.getText();
         return new Valor(Double.valueOf(numero));
@@ -148,14 +160,13 @@ public class MiVisitor extends PLATABaseVisitor<Valor> {
 
     @Override
     public Valor visitNotExpr(PLATAParser.NotExprContext ctx) {
-        Valor value = this.visit(ctx.expr());
+        Valor value = this.visit(ctx.expr_logica());
         return new Valor(!value.asBoolean());
     }
 
-    
     @Override
-    public Valor visitMenosExpr(PLATAParser.MenosExprContext ctx) {
-        Valor valor = visit(ctx.expr());
+    public Valor visitMenosExprAritmetica(PLATAParser.MenosExprAritmeticaContext ctx) {
+        Valor valor = visit(ctx.expr_aritmeticas());
         if (valor.isDouble())
             return new Valor(valor.asDouble() * (-1));
         else
@@ -163,9 +174,15 @@ public class MiVisitor extends PLATABaseVisitor<Valor> {
     }
 
     @Override
-    public Valor visitRelacionesExpr(PLATAParser.RelacionesExprContext ctx) {
-        Valor opIzquierdo = visit(ctx.expr(0));
-        Valor opDerecho = visit(ctx.expr(1));
+    public Valor visitRelacionesExprRelacionales(PLATAParser.RelacionesExprRelacionalesContext ctx) {
+        Valor opIzquierdo = visit(ctx.expr_aritmeticas(0));
+        Valor opDerecho = visit(ctx.expr_aritmeticas(1));
+
+        if (!opIzquierdo.isDouble() || !opDerecho.isDouble()) {
+            throw new PlataException(
+                    "Error de tipo: las comparaciones relacionales de tipo (<,<=,>,>=) solo se permiten entre números. "
+                            + "Intento comparar: " + opIzquierdo + " " + ctx.op.getText() + " " + opDerecho);
+        }
 
         switch (ctx.op.getType()) {
             case PLATAParser.MENOR:
@@ -184,18 +201,26 @@ public class MiVisitor extends PLATABaseVisitor<Valor> {
     }
 
     @Override
-    public Valor visitAndExpr(PLATAParser.AndExprContext ctx) {
-        Valor opIzquierdo = visit(ctx.expr(0));
-        Valor opDerecho = visit(ctx.expr(1));
-        boolean izq = opIzquierdo.isBoolean() ? opIzquierdo.asBoolean() : opIzquierdo.asDouble() != 0;
-        boolean der = opDerecho.isBoolean() ? opDerecho.asBoolean() : opDerecho.asDouble() != 0;
-        return new Valor(izq && der);
+    public Valor visitAndExprLogica(PLATAParser.AndExprLogicaContext ctx) {
+        Valor opIzquierdo = visit(ctx.expr_logica(0));
+        if (!opIzquierdo.isBoolean())
+            throw new PlataException("Operando izquierdo de && no es booleano");
+
+        // Cortocircuito: si el izquierdo es false, no evaluamos el derecho
+        if (!opIzquierdo.asBoolean())
+            return new Valor(false);
+
+        Valor opDerecho = visit(ctx.expr_logica(1));
+        if (!opDerecho.isBoolean())
+            throw new PlataException("Operando derecho de && no es booleano");
+
+        return new Valor(opDerecho.asBoolean());
     }
 
     @Override
-    public Valor visitIgualdadesExpr(PLATAParser.IgualdadesExprContext ctx) {
-        Valor opIzquierdo = visit(ctx.expr(0));
-        Valor opDerecho = visit(ctx.expr(1));
+    public Valor visitIgualdadesExprRelacionales(PLATAParser.IgualdadesExprRelacionalesContext ctx) {
+        Valor opIzquierdo = visit(ctx.expr_aritmeticas(0));
+        Valor opDerecho = visit(ctx.expr_aritmeticas(1));
         switch (ctx.op.getType()) {
             case PLATAParser.IGUAL_QUE:
                 // Caso especial: comparación con tolerancia entre números
@@ -228,26 +253,32 @@ public class MiVisitor extends PLATABaseVisitor<Valor> {
     }
 
     @Override
-    public Valor visitORExpr(PLATAParser.ORExprContext ctx) {
-        Valor opIzquierdo = visit(ctx.expr(0));
-        Valor opDerecho = visit(ctx.expr(1));
+    public Valor visitORExprLogica(PLATAParser.ORExprLogicaContext ctx) {
+        Valor opIzquierdo = visit(ctx.expr_logica(0));
+        if (!opIzquierdo.isBoolean())
+            throw new PlataException("Operando izquierdo de || no es booleano");
 
-        boolean izq1 = opIzquierdo.isBoolean() ? opIzquierdo.asBoolean() : opIzquierdo.asDouble() != 0;
-        boolean der2 = opDerecho.isBoolean() ? opDerecho.asBoolean() : opDerecho.asDouble() != 0;
-        return new Valor(izq1 || der2);
+        // Cortocircuito: si el izquierdo es true, no evaluamos el derecho
+        if (opIzquierdo.asBoolean())
+            return new Valor(true);
+
+        Valor opDerecho = visit(ctx.expr_logica(1));
+        if (!opDerecho.isBoolean())
+            throw new PlataException("Operando derecho de || no es booleano");
+
+        return new Valor(opDerecho.asBoolean());
     }
-
 
     @Override
     public Valor visitBucle_while(PLATAParser.Bucle_whileContext ctx) {
-        Valor condicion = visit(ctx.expr());
+        Valor condicion = visit(ctx.expr_logica());
         if (!condicion.isBoolean())
             throw new PlataException("La condicion del bucle no es un booleano");
 
         while (condicion.asBoolean()) {
             visit(ctx.bloque());
             // La condicion se ha tenido que modificar, si no seria un bucle
-            condicion = visit(ctx.expr());
+            condicion = visit(ctx.expr_logica());
             System.out.println(" Se esta ejecutando un bucle while");
         }
 
@@ -258,7 +289,7 @@ public class MiVisitor extends PLATABaseVisitor<Valor> {
     @Override
     public Valor visitIf_sentencia(PLATAParser.If_sentenciaContext ctx) {
         // IF principal
-        Valor primeraCondicion = visit(ctx.expr(0));
+        Valor primeraCondicion = visit(ctx.expr_logica(0));
         if (!primeraCondicion.isBoolean()) {
             throw new PlataException("La condicion del IF no es booleana");
         }
@@ -269,11 +300,11 @@ public class MiVisitor extends PLATABaseVisitor<Valor> {
         }
 
         // Todos los IF ELSE
-        int totalCondiciones = ctx.expr().size(); // incluye las del IF y los ELSE_IF
+        int totalCondiciones = ctx.expr_logica().size(); // incluye las del IF y los ELSE_IF
         int totalBloques = ctx.bloque().size(); // incluye el del IF, ELSE_IF(s) y ELSE
 
         for (int i = 1; i < totalCondiciones; i++) {
-            Valor condicionElseIf = visit(ctx.expr(i));
+            Valor condicionElseIf = visit(ctx.expr_logica(i));
             if (!condicionElseIf.isBoolean())
                 throw new PlataException("La condicion del ELSE IF no es booleana");
 
@@ -295,5 +326,28 @@ public class MiVisitor extends PLATABaseVisitor<Valor> {
         return Valor.VACIO;
     }
 
+    @Override
+    public Valor visitBoolExprLogica(PLATAParser.BoolExprLogicaContext ctx) {
+        String textoBool = ctx.getText();
+        String normalizado = Character.toUpperCase(textoBool.charAt(0)) + textoBool.substring(1).toLowerCase();
+
+        if (normalizado.equals("Verdadero")) {
+            return new Valor(true);
+        } else if (normalizado.equals("Falso")) {
+            return new Valor(false);
+        } else {
+            throw new PlataException("Booleano inválido: " + textoBool);
+        }
+    }
+
+    @Override
+    public Valor visitParentesisExprLogica(PLATAParser.ParentesisExprLogicaContext ctx) {
+        return visit(ctx.expr_logica());
+    }
+
+    @Override
+    public Valor visitParentesisExprRelacionales(PLATAParser.ParentesisExprRelacionalesContext ctx) {
+        return visit(ctx.expr_relacionales());
+    }
 
 }

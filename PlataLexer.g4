@@ -4,7 +4,7 @@ lexer grammar PlataLexer;
 //  PALABRAS RESERCADAS
 AVANZA: [Aa] 'vanza';
 GIRA: [Gg] 'ira';
-FRENA: [Pp] 'ara';
+PARA: [Pp] 'ara';
 WHILE: [Mm] 'ientras';
 ELSE_IF : 'sinosi';
 ELSE    : 'sino';
@@ -32,7 +32,7 @@ AND: '&&';
 OR: '||';
 
 
-//Numeros
+//Atomicos
 INT: DIGITO+;
 FLOAT: (DIGITO)+ '.' DIGITO+; ///!Corregir el signo -
 fragment DIGITO: [0-9];

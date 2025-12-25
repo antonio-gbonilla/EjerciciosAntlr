@@ -34,11 +34,11 @@ public interface PLATAVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitGira(PLATAParser.GiraContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link PLATAParser#frena}.
+	 * Visit a parse tree produced by {@link PLATAParser#para}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitFrena(PLATAParser.FrenaContext ctx);
+	T visitPara(PLATAParser.ParaContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link PLATAParser#asignacion}.
 	 * @param ctx the parse tree
@@ -58,75 +58,116 @@ public interface PLATAVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitBucle_while(PLATAParser.Bucle_whileContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code AndExpr}
-	 * labeled alternative in {@link PLATAParser#expr}.
+	 * Visit a parse tree produced by {@link PLATAParser#expr}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitAndExpr(PLATAParser.AndExprContext ctx);
+	T visitExpr(PLATAParser.ExprContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code notExpr}
-	 * labeled alternative in {@link PLATAParser#expr}.
+	 * Visit a parse tree produced by the {@code MultiplicacionExprAritmetica}
+	 * labeled alternative in {@link PLATAParser#expr_aritmeticas}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMultiplicacionExprAritmetica(PLATAParser.MultiplicacionExprAritmeticaContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code SumaExprAritmetica}
+	 * labeled alternative in {@link PLATAParser#expr_aritmeticas}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitSumaExprAritmetica(PLATAParser.SumaExprAritmeticaContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code MenosExprAritmetica}
+	 * labeled alternative in {@link PLATAParser#expr_aritmeticas}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMenosExprAritmetica(PLATAParser.MenosExprAritmeticaContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code AtomicoExprAritmetica}
+	 * labeled alternative in {@link PLATAParser#expr_aritmeticas}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitAtomicoExprAritmetica(PLATAParser.AtomicoExprAritmeticaContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code ParentesisExprAritmetica}
+	 * labeled alternative in {@link PLATAParser#expr_aritmeticas}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitParentesisExprAritmetica(PLATAParser.ParentesisExprAritmeticaContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code RelacionesExprRelacionales}
+	 * labeled alternative in {@link PLATAParser#expr_relacionales}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitRelacionesExprRelacionales(PLATAParser.RelacionesExprRelacionalesContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code IgualdadesExprRelacionales}
+	 * labeled alternative in {@link PLATAParser#expr_relacionales}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitIgualdadesExprRelacionales(PLATAParser.IgualdadesExprRelacionalesContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code ParentesisExprRelacionales}
+	 * labeled alternative in {@link PLATAParser#expr_relacionales}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitParentesisExprRelacionales(PLATAParser.ParentesisExprRelacionalesContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code LogicaExprRelacionales}
+	 * labeled alternative in {@link PLATAParser#expr_logica}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitLogicaExprRelacionales(PLATAParser.LogicaExprRelacionalesContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code ORExprLogica}
+	 * labeled alternative in {@link PLATAParser#expr_logica}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitORExprLogica(PLATAParser.ORExprLogicaContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code BoolExprLogica}
+	 * labeled alternative in {@link PLATAParser#expr_logica}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBoolExprLogica(PLATAParser.BoolExprLogicaContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code IdExprLogica}
+	 * labeled alternative in {@link PLATAParser#expr_logica}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitIdExprLogica(PLATAParser.IdExprLogicaContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code ParentesisExprLogica}
+	 * labeled alternative in {@link PLATAParser#expr_logica}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitParentesisExprLogica(PLATAParser.ParentesisExprLogicaContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code AndExprLogica}
+	 * labeled alternative in {@link PLATAParser#expr_logica}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitAndExprLogica(PLATAParser.AndExprLogicaContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code NotExpr}
+	 * labeled alternative in {@link PLATAParser#expr_logica}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitNotExpr(PLATAParser.NotExprContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code ParentesisExpr}
-	 * labeled alternative in {@link PLATAParser#expr}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitParentesisExpr(PLATAParser.ParentesisExprContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code menosExpr}
-	 * labeled alternative in {@link PLATAParser#expr}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitMenosExpr(PLATAParser.MenosExprContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code SumaExpr}
-	 * labeled alternative in {@link PLATAParser#expr}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitSumaExpr(PLATAParser.SumaExprContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code ORExpr}
-	 * labeled alternative in {@link PLATAParser#expr}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitORExpr(PLATAParser.ORExprContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code RelacionesExpr}
-	 * labeled alternative in {@link PLATAParser#expr}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitRelacionesExpr(PLATAParser.RelacionesExprContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code IgualdadesExpr}
-	 * labeled alternative in {@link PLATAParser#expr}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitIgualdadesExpr(PLATAParser.IgualdadesExprContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code atomicoExpr}
-	 * labeled alternative in {@link PLATAParser#expr}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitAtomicoExpr(PLATAParser.AtomicoExprContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code MultiplicacionExpr}
-	 * labeled alternative in {@link PLATAParser#expr}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitMultiplicacionExpr(PLATAParser.MultiplicacionExprContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code numeroAtomico}
 	 * labeled alternative in {@link PLATAParser#atomico}.
