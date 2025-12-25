@@ -6,9 +6,9 @@
     "configurations": [
         {
             "type": "java",
-            "name": "kk",
+            "name": "Main",
             "request": "launch",
-            "mainClass": "kk",
+            "mainClass": "Main",
             "projectName": "PrimeraGramatica_41637f7b"
         },
         {

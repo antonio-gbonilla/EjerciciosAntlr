@@ -24,6 +24,9 @@ if_sentencia: 	IF '('expr_logica')' bloque
 // while
 bucle_while: WHILE '('expr_logica')' bloque;
 
+// ------------------ BLOQUES ------------------
+bloque: '{' sentencia+ '}';
+
 // --- EXPRESIONES ---
 expr
 	: expr_aritmeticas
@@ -64,6 +67,5 @@ atomico
 	| STRING	#stringAtomico
 	;
 
-// Bloque 
-bloque: '{' sentencia+ '}';
+
 
